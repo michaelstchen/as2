@@ -1,5 +1,9 @@
 #include <gtest/gtest.h>
 #include "linalg.h"
+#include "property.h"
+#include "light.h"
+
+/* Vector test suite */
 
 TEST(VectorTest, VectorAddition) {
     Vector* v1 = new Vector(1.0, 2.0, 3.0);
@@ -50,6 +54,33 @@ TEST(VectorTest, VectorFromPoint) {
     delete p1; delete p2; delete r;
 }
 
+/* Color test suite */
+TEST(ColorTest, ColorAdd) {
+    Color* c1 = new Color(0.2, 0.3, 0.4);
+    Color* c2 = new Color(0.0, 0.1, 0.15);
+    c1->add(c2);
+    ASSERT_FLOAT_EQ(0.2, c1->r);
+    ASSERT_FLOAT_EQ(0.4, c1->g);
+    ASSERT_FLOAT_EQ(0.55, c1->b);
+    delete c1; delete c2;
+}
+
+TEST(ColorTest, ColorMult) {
+    Color* c1 = new Color(0.2, 0.3, 0.4);
+    c1->mult(0.11);
+    ASSERT_FLOAT_EQ(0.022, c1->r);
+    ASSERT_FLOAT_EQ(0.033, c1->g);
+    ASSERT_FLOAT_EQ(0.044, c1->b);
+    delete c1;
+}
+
+TEST(ColorTest, Color8Bit) {
+    Color* c1 = new Color(0.2, 0.3, 0.35);
+    ASSERT_EQ(51, c1->bit8R());
+    ASSERT_EQ(76, c1->bit8G()); //actual is 76.5
+    ASSERT_EQ(89, c1->bit8B()); //actual is 89.25
+    delete c1;
+}
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest( &argc, argv );

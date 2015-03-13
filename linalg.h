@@ -40,6 +40,7 @@ class Matrix {
             {0,0,0,1}
         };
  public:
+    Matrix() {}
     float getVal(int m, int n);
     void setVal(int m, int n, float val);
     void print();

@@ -8,7 +8,7 @@ PNGFLAGS = -lm -lpng
 GTEST_DIR = /home/michael/Downloads/gtest-1.7.0
 
 #all file dependencies
-FILES = linalg.cpp
+FILES = linalg.cpp light.cpp property.cpp geomobj.cpp
 
 RM = /bin/rm -f
 
@@ -20,11 +20,11 @@ main: clean main.cpp
 clean: 
 	$(RM) *.o main *~ output.png test
 
-check: all
-	$(CC) $(CFLAGS) -isystem ${GTEST_DIR}/include -I${GTEST_DIR} -pthread -c ${GTEST_DIR}/src/gtest-all.cc
-	ar -rv libgtest.a gtest-all.o
+check: all libgtest.a
 	$(CC) $(CFLAGS) -isystem ${GTEST_DIR}/include -pthread test.cpp $(FILES) libgtest.a -o test
 	./test
 
-
+libgtest:
+	$(CC) $(CFLAGS) -isystem ${GTEST_DIR}/include -I${GTEST_DIR} -pthread -c ${GTEST_DIR}/src/gtest-all.cc
+	ar -rv libgtest.a gtest-all.o
 

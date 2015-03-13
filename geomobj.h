@@ -14,7 +14,7 @@ class Shape {
  public:
     Matrix transform;
     Matrix normT;
-    virtual bool intersect(Ray r, Point p);
+    virtual bool intersect(Ray r, Point p) {return false;}
 };
 
 class Sphere : public Shape {
