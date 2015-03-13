@@ -3,6 +3,7 @@
 
 class Point {
  public:
+    Point() {}
     Point(float xIn, float yIn, float zIn);
     float x; float y; float z;
 };
@@ -24,7 +25,9 @@ class Normal : public Vector {
 Vector* add(Vector* v1, Vector* v2);
 Vector* mult(Vector* v, float scalar);
 Vector* dot(Vector* v1, Vector* v2);
+/* returns a pointer to v1 x v2 */
 Vector* cross(Vector* v1, Vector* v2);
+/* returns a pointer to the vector p2 - p1 */
 Vector* newVector(Point* p1, Point* p2);
 
 class Matrix {

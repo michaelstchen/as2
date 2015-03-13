@@ -30,3 +30,27 @@ Vector* mult(Vector* v1, float scalar) {
     ret->z = ret->z * scalar;
     return ret;
 }
+
+Vector* dot(Vector* v1, Vector* v2) {
+    Vector* ret = new Vector();
+    ret->x = v1->x * v2->x;
+    ret->y = v1->y * v2->y;
+    ret->z = v1->z * v2->z;
+    return ret;
+}
+
+Vector* cross(Vector* v1, Vector* v2) {
+    Vector* ret = new Vector();
+    ret->x = (v1->y)*(v2->z) - (v1->z)*(v2->y);
+    ret->y = (v1->x)*(v2->z) - (v1->z)*(v2->x);
+    ret->z = (v1->x)*(v2->y) - (v1->y)*(v2->x);
+    return ret;
+}
+
+Vector* newVector(Point* p1, Point* p2) {
+    Vector* ret = new Vector();
+    ret->x = p2->x - p1->x;
+    ret->y = p2->y - p1->y;
+    ret->z = p2->z - p1->z;
+    return ret;
+}
