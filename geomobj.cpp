@@ -47,10 +47,11 @@ Point* Sphere::intersect(Ray* r) {
     
 }
 
-Normal* Sphere::getNormal(Point* p) {
-    return NULL;
+/* returns the normal vector at point P assumin P lies on the sphere */
+Vector* Sphere::getNormal(Point* p) {
+    return newVector(p, center);
 }
 
-Color* Sphere::calcBRDF(Point* p) {
-    return NULL;
+Color* Sphere::calcBRDF(Ray* r, Point* p) {
+    return new Color(1.0, 0.0, 0.0);
 }

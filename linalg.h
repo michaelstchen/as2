@@ -14,12 +14,6 @@ class Vector {
     Vector(float xIn, float yIn, float zIn);
     float x; float y; float z;
     void normalize();
-    bool isNormal() {return false;}
-};
-
-class Normal : public Vector {
- public:
-    bool isNormal() {return true;}
 };
 
 Vector* add(Vector* v1, Vector* v2);
