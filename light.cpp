@@ -10,3 +10,7 @@ Direct_Light::Direct_Light(Color* c, Vector* v) {
     color = c;
     dir = v;
 }
+
+Ambient_Light::Ambient_Light(Color* c) {
+    color = c;
+}

@@ -2,6 +2,7 @@
 #include "linalg.h"
 #include "property.h"
 #include "light.h"
+#include "geomobj.h"
 
 /* Vector test suite */
 
@@ -81,6 +82,8 @@ TEST(ColorTest, Color8Bit) {
     ASSERT_EQ(89, c1->bit8B()); //actual is 89.25
     delete c1;
 }
+
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest( &argc, argv );

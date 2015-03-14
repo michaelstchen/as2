@@ -28,5 +28,10 @@ class Direct_Light : public Light {
     bool isDirectLight() {return true;}
 };
 
+class Ambient_Light : public Light {
+ public:
+    Ambient_Light(Color* c);
+};
+
 
 #endif

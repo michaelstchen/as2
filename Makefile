@@ -8,7 +8,7 @@ PNGFLAGS = -lm -lpng
 GTEST_DIR = /home/michael/Downloads/gtest-1.7.0
 
 #all file dependencies
-FILES = linalg.cpp light.cpp property.cpp geomobj.cpp
+FILES = linalg.cpp light.cpp property.cpp geomobj.cpp raytracer.cpp
 
 RM = /bin/rm -f
 

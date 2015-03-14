@@ -19,7 +19,7 @@ class World {
 
     void addShape(Shape* s);
     int numOfShapes();
-    Light* getShape(int index);
+    Shape* getShape(int index);
 };
 
 class ImgPlane {
