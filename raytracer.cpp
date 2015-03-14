@@ -1,5 +1,7 @@
 #include "raytracer.h"
 #include <cstddef>
+#include <cmath>
+#include <stdio.h>
 
 Ray::Ray(Point* p, Vector* d) {
     p0 = p;
@@ -17,7 +19,7 @@ Point* Ray::findPoint(float t) {
     return pt;
 }
 
-EyeRay::EyeRay(float min, float max, Point* p, Vector* d) : Ray(p, d) {
-    t_min = min;
-    t_max = max;
+EyeRay::EyeRay(Point* p, Vector* d) : Ray(p, d) {
+    t_min = 1;
+    t_max = INFINITY;
 }

@@ -1,6 +1,7 @@
 #include "linalg.h"
 #include <cmath>
 #include <cstddef>
+#include <stdio.h>
 
 Point::Point(float xIn, float yIn, float zIn) {
     x = xIn; y = yIn; z = zIn;
@@ -34,9 +35,9 @@ Point* add(Point* p, Vector* v) {
 
 Vector* mult(Vector* v1, float scalar) {
     Vector* ret = new Vector();
-    ret->x = ret->x * scalar;
-    ret->y = ret->y * scalar;
-    ret->z = ret->z * scalar;
+    ret->x = v1->x * scalar;
+    ret->y = v1->y * scalar;
+    ret->z = v1->z * scalar;
     return ret;
 }
 

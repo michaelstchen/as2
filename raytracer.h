@@ -15,7 +15,7 @@ class Ray {
 
 class EyeRay : public Ray {
  public:
-    EyeRay(float min, float max, Point* p, Vector* d);
+    EyeRay(Point* p, Vector* d);
 };
 
 

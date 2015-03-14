@@ -3,6 +3,7 @@
 #include "linalg.h"
 #include <cmath>
 #include <cstddef>
+#include <stdio.h>
 
 Shape::Shape(World* w, Matrix* t) {
     world = w;
@@ -23,11 +24,14 @@ Sphere::Sphere(Point* c, float r, World* w, Matrix* t) : Shape(w, t) {
  * and (c = sphere's center) and (r = sphere's radius). 
  * This function returns NULL if there is no intersection. */
 Point* Sphere::intersect(Ray* r) {
+    (r->dir)->normalize();
     float d_d = dot(r->dir, r->dir);
     Vector* e_minus_c = newVector(center, r->p0);
     float d_ec = dot(r->dir, e_minus_c);
     float ec_ec = dot(e_minus_c, e_minus_c);
-    
+
+    delete e_minus_c;
+  
     float discriminant = d_ec*d_ec - d_d*(ec_ec - radius * radius);
 
     if (discriminant < 0.0) {

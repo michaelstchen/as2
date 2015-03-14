@@ -1,8 +1,10 @@
 #include <gtest/gtest.h>
+#include <stdio.h>
 #include "linalg.h"
 #include "property.h"
 #include "light.h"
 #include "geomobj.h"
+#include "raytracer.h"
 
 /* Vector test suite */
 
@@ -81,7 +83,57 @@ TEST(ColorTest, Color8Bit) {
     delete c1;
 }
 
+/* Shape Intersection Tests */
 
+TEST(IntersectionTest, SphereTest0) {
+    Point* c = new Point(0.0, 0.0, 0.0);
+    Sphere* s = new Sphere(c, 1, NULL, NULL);
+    
+    Point* p = new Point(2, 0, 0);
+    Vector* d = new Vector(0, 1, 0);
+    Ray* ray = new Ray(p, d);
+
+    Point* i = s->intersect(ray);
+
+    ASSERT_EQ(NULL, i);
+    
+    delete c; delete s; delete p; delete d; delete ray; delete i;
+}
+
+
+TEST(IntersectionTest, SphereTest1) {
+    Point* c = new Point(0.0, 0.0, 0.0);
+    Sphere* s = new Sphere(c, 1, NULL, NULL);
+    
+    Point* p = new Point(2, 1, 0);
+    Vector* d = new Vector(-1, 0, 0);
+    Ray* ray = new Ray(p, d);
+
+    Point* i = s->intersect(ray);
+
+    ASSERT_FLOAT_EQ(0.0, i->x);
+    ASSERT_FLOAT_EQ(1.0, i->y);
+    ASSERT_FLOAT_EQ(0.0, i->z);
+    
+    delete c; delete s; delete p; delete d; delete ray; delete i;
+}
+
+TEST(IntersectionTest, SphereTest2) {
+    Point* c = new Point(0.0, 0.0, 0.0);
+    Sphere* s = new Sphere(c, 1, NULL, NULL);
+    
+    Point* p = new Point(2, 0, 0);
+    Vector* d = new Vector(-1, 0, 0);
+    Ray* ray = new Ray(p, d);
+
+    Point* i = s->intersect(ray);
+
+    ASSERT_FLOAT_EQ(1.0, i->x);
+    ASSERT_FLOAT_EQ(0.0, i->y);
+    ASSERT_FLOAT_EQ(0.0, i->z);
+    
+    delete c; delete s; delete p; delete d; delete ray; delete i;
+}
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest( &argc, argv );
