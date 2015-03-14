@@ -28,11 +28,9 @@ TEST(VectorTest, VectorNormalize) {
 TEST(VectorTest, VectorDot) {
     Vector* v1 = new Vector(1.0, 2.0, 3.0);
     Vector* v2 = new Vector(0.0, 5.0, 6.0);
-    Vector* d = dot(v1, v2);
-    ASSERT_FLOAT_EQ(0.0, d->x);
-    ASSERT_FLOAT_EQ(10.0, d->y);
-    ASSERT_FLOAT_EQ(18.0, d->z);
-    delete v1; delete v2; delete d;    
+    float d = dot(v1, v2);
+    ASSERT_FLOAT_EQ(28.0, d);
+    delete v1; delete v2;
 }
 
 TEST(VectorTest, VectorCross) {

@@ -23,8 +23,9 @@ class Normal : public Vector {
 };
 
 Vector* add(Vector* v1, Vector* v2);
+Point* add(Point* p, Vector* v);
 Vector* mult(Vector* v, float scalar);
-Vector* dot(Vector* v1, Vector* v2);
+float dot(Vector* v1, Vector* v2);
 /* returns a pointer to v1 x v2 */
 Vector* cross(Vector* v1, Vector* v2);
 /* returns a pointer to the vector p2 - p1 */
@@ -45,6 +46,7 @@ class Matrix {
     void setVal(int m, int n, float val);
     void print();
     Matrix* invert();
+    Matrix* transpose();
 };
 
 Matrix* makeTransl(float tx, float ty, float tz);

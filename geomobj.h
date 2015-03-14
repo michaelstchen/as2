@@ -5,6 +5,7 @@
 #include "linalg.h"
 #include "property.h"
 #include "raytracer.h"
+#include "linalg.h"
 
 class World;
 
@@ -14,9 +15,9 @@ class Shape {
     World* world;
     Matrix* transform;
     Matrix* normT;
-    virtual bool intersect(Ray* r, Point* p);
-    virtual Normal* getNormal(Point* p);
-    virtual Color* calcBRDF(Point* p);
+    virtual bool intersect(Ray* r, Point* p) {return false;}
+    virtual Normal* getNormal(Point* p) {return NULL;}
+    virtual Color* calcBRDF(Point* p) {return NULL;}
 };
 
 class Sphere : public Shape {
@@ -24,7 +25,7 @@ class Sphere : public Shape {
     Sphere(Point* c, float r, World* w, Matrix* t);
     Point* center;
     float radius;
-    bool intersect(Ray* r, Point* p);
+    Point* intersect(Ray* r);
     Normal* getNormal(Point* p);
     Color* calcBRDF(Point* p);
 };
