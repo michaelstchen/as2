@@ -2,7 +2,7 @@
 #include <math.h>
 #include <malloc.h>
 #include <png.h>
-#include "scene.h"
+#include "raytracer.h"
 
 
 //****************************************************

@@ -5,6 +5,7 @@
 #include "light.h"
 #include "geomobj.h"
 #include "raytracer.h"
+#include "ray.h"
 
 /* Vector test suite */
 

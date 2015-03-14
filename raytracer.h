@@ -1,22 +1,39 @@
-#ifndef RAYTRACER_H
-#define RAYTRACER_H
+#ifndef SCENE_H
+#define SCENE_H
 
-#include "linalg.h"
-#include <cstddef>
+#include <vector>
+#include "light.h"
+#include "geomobj.h"
+#include "property.h"
+#include "ray.h"
 
-class Ray {
+using namespace std;
+
+class World {
+ private:
+    vector<Light*> lights;
+    vector<Shape*> shapes;
  public:
-    Ray(Point* p, Vector* d);
-    Point* p0;
-    Vector* dir;
-    float t_min; float t_max;
-    Point* findPoint(float t);
+    void addLight(Light l);
+    int numOfLights();
+    Light* getLight(int i);
+
+    void addShape(Shape* s);
+    int numOfShapes();
+    Shape* getShape(int index);
 };
 
-class EyeRay : public Ray {
+class ImgPlane {
+ private:
+    Point ll; Point lr; Point ul; Point ur;
+    int height; int width;
+    vector< vector<Color*> > pixels;
  public:
-    EyeRay(Point* p, Vector* d);
+    int getHeight();
+    int getWidth();
+    Point* getPixelPos(int u, int v);
+    Color* getPixelColor(int u, int v);
+    void setPixelColor(int u, int v, Color* c);
 };
-
 
 #endif

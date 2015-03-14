@@ -1,4 +1,5 @@
-#include "raytracer.h"
+#include "raytracer.cpp"
+#include "ray.h"
 #include <cstddef>
 #include <cmath>
 #include <stdio.h>

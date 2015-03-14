@@ -4,8 +4,7 @@
 #include <cstddef>
 #include "linalg.h"
 #include "property.h"
-#include "raytracer.h"
-#include "linalg.h"
+#include "ray.h"
 
 class World;
 

@@ -1,5 +1,5 @@
 #include "geomobj.h"
-#include "raytracer.h"
+#include "ray.h"
 #include "linalg.h"
 #include <cmath>
 #include <cstddef>
