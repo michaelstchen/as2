@@ -92,9 +92,10 @@ TEST(IntersectionTest, SphereTest0) {
     
     Point* p = new Point(2, 0, 0);
     Vector* d = new Vector(0, 1, 0);
-    Ray* ray = new Ray(p, d);
+    EyeRay* ray = new EyeRay(p, d);
 
-    Point* i = s->intersect(ray);
+    float t = s->intersect(ray);
+    Point* i = ray->findPoint(t);
 
     ASSERT_EQ(NULL, i);
     
@@ -108,9 +109,10 @@ TEST(IntersectionTest, SphereTest1) {
     
     Point* p = new Point(2, 1, 0);
     Vector* d = new Vector(-1, 0, 0);
-    Ray* ray = new Ray(p, d);
+    EyeRay* ray = new EyeRay(p, d);
 
-    Point* i = s->intersect(ray);
+    float t = s->intersect(ray);
+    Point* i = ray->findPoint(t);
 
     ASSERT_FLOAT_EQ(0.0, i->x);
     ASSERT_FLOAT_EQ(1.0, i->y);
@@ -125,9 +127,10 @@ TEST(IntersectionTest, SphereTest2) {
     
     Point* p = new Point(2, 0, 0);
     Vector* d = new Vector(-1, 0, 0);
-    Ray* ray = new Ray(p, d);
+    EyeRay* ray = new EyeRay(p, d);
 
-    Point* i = s->intersect(ray);
+    float t = s->intersect(ray);
+    Point* i = ray->findPoint(t);
 
     ASSERT_FLOAT_EQ(1.0, i->x);
     ASSERT_FLOAT_EQ(0.0, i->y);
@@ -135,6 +138,45 @@ TEST(IntersectionTest, SphereTest2) {
     
     delete c; delete s; delete p; delete d; delete ray; delete i;
 }
+
+/* Testing getPixelPos() for ImgPlane */
+TEST(ImgPlaneTest, getPixelPos) {
+    Point* ll = new Point(0.0, 0.0, 0.0);
+    Point* lr = new Point(5.0, 0.0, 0.0);
+    Point* ul = new Point(0.0, 7.0, 0.0);
+    Point* ur = new Point(5.0, 7.0, 0.0);
+    ImgPlane* img = new ImgPlane(ll, lr, ul, ur, 5, 7);
+
+    Point* t0 = img->getPixelPos(0, 6);
+    ASSERT_FLOAT_EQ(0.5, t0->x);
+    ASSERT_FLOAT_EQ(0.5, t0->y);
+    ASSERT_FLOAT_EQ(0.0, t0->z);
+    delete t0;
+
+    Point* t1 = img->getPixelPos(4, 6);
+    ASSERT_FLOAT_EQ(4.5, t1->x);
+    ASSERT_FLOAT_EQ(0.5, t1->y);
+    ASSERT_FLOAT_EQ(0.0, t1->z);
+    delete t1;
+
+    Point* t2 = img->getPixelPos(0, 0);
+    ASSERT_FLOAT_EQ(0.5, t2->x);
+    ASSERT_FLOAT_EQ(6.5, t2->y);
+    ASSERT_FLOAT_EQ(0.0, t2->z);
+    delete t2;
+    
+    Point* t3 = img->getPixelPos(4, 0);
+    ASSERT_FLOAT_EQ(4.5, t3->x);
+    ASSERT_FLOAT_EQ(6.5, t3->y);
+    ASSERT_FLOAT_EQ(0.0, t3->z);
+    delete t3;
+
+    delete ul; delete ll; delete ur; delete lr;
+    delete img;
+
+}
+
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest( &argc, argv );

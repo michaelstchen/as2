@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "light.h"
-#include <vector>
 #include "geomobj.h"
 #include "property.h"
 #include "ray.h"
@@ -34,12 +33,12 @@ class ImgPlane {
     int height; int width;
     vector<Color*> pixels;
  public:
-    ImgPlane(Point* p0, Point* p1, Point* p2, Point* p3, int h, int w);
+    ImgPlane(Point* LL, Point* LR, Point* UL, Point* UR, int w, int h);
     /* in number of pixels */
     int getHeight();
     int getWidth();
     /* converts pixel coordinates to world coordinates. (0,0) represents
-       the lower left pixel. 0 <= i < w. 0 <= j < h. */
+       the upper left pixel. 0 <= i < w. 0 <= j < h. */
     Point* getPixelPos(int i, int j);
     Color* getPixelColor(int i, int j);
     void setPixelColor(int i, int j, Color* c);

@@ -22,8 +22,8 @@ Sphere::Sphere(Point* c, float r, World* w, Matrix* t) : Shape(w, t) {
  *     (d.d)t^2 + 2(d.(e-c))t + (e-c).(e-c) - r^2 = 0
  * where the ray is parameterized as p(t) = e + td
  * and (c = sphere's center) and (r = sphere's radius). 
- * This function returns NULL if there is no intersection. */
-Point* Sphere::intersect(Ray* r) {
+ * This function returns -1.0 if there is no intersection. */
+float Sphere::intersect(Ray* r) {
     (r->dir)->normalize();
     float d_d = dot(r->dir, r->dir);
     Vector* e_minus_c = newVector(center, r->p0);
@@ -35,15 +35,13 @@ Point* Sphere::intersect(Ray* r) {
     float discriminant = d_ec*d_ec - d_d*(ec_ec - radius * radius);
 
     if (discriminant < 0.0) {
-        return NULL;
+        return -1.0;
     }
 
     float t0 = (-d_ec + sqrt(discriminant)) / d_d;
     float t1 = (-d_ec - sqrt(discriminant)) / d_d;
 
-    float t = fmin(t0, t1);
-
-    return r->findPoint(t);
+    return fmin(t0, t1);
     
 }
 

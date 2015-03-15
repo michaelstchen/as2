@@ -14,7 +14,7 @@ class Shape {
     World* world;
     Matrix* transform;
     Matrix* normT;
-    virtual bool intersect(Ray* r, Point* p) {return false;}
+    virtual float intersect(Ray* r) {return -1.0;}
     virtual Vector* getNormal(Point* p) {return NULL;}
     virtual Color* calcBRDF(Ray*r, Point* p) {return NULL;}
 };
@@ -24,7 +24,7 @@ class Sphere : public Shape {
     Sphere(Point* c, float r, World* w, Matrix* t);
     Point* center;
     float radius;
-    Point* intersect(Ray* r);
+    float intersect(Ray* r);
     Vector* getNormal(Point* p);
     Color* calcBRDF(Ray* r, Point* p);
 };

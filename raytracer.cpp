@@ -1,4 +1,5 @@
 #include <vector>
+#include <stdio.h>
 #include "raytracer.h"
 
 /* World class implemetations */
@@ -36,8 +37,8 @@ vector<Shape*>::iterator World::shapeIterEnd() {
 
 
 /* ImgPlane class implementations */
-ImgPlane::ImgPlane(Point* p0, Point* p1, Point* p2, Point* p3, int h, int w) {
-    ll = p0; lr = p1; ul = p2; ur = p3;
+ImgPlane::ImgPlane(Point* LL, Point* LR, Point* UL, Point* UR, int w, int h) {
+    ll = LL; lr = LR; ul = UL; ur = UR;
     height = h; width = w;
     pixels.resize(height*width, new Color(0.0, 0.0, 0.0));
 }
@@ -51,8 +52,9 @@ int ImgPlane::getWidth() {
 }
 
 Point* ImgPlane::getPixelPos(int i, int j) {
-    float u = (float) i / (float) width;
-    float v = (float) j / (float) height;
+    float u = (float) i / (float) width + 0.5 / (float) width;
+    float v = (float) j / (float) height + 0.5 / (float) height;
+
     Point* vLL = mult(ll, v);
     Point* vUL = mult(ul, 1.0 - v);
     Point* left = add(vLL, vUL);
@@ -63,8 +65,8 @@ Point* ImgPlane::getPixelPos(int i, int j) {
     Point* right = add(vLR, vUR);
     delete vLR; delete vUR;
 
-    Point* uLeft = mult(left, u);
-    Point* uRight = mult(right, 1.0 - u);
+    Point* uLeft = mult(left, 1.0 - u);
+    Point* uRight = mult(right, u);
     Point* ret = add(uLeft, uRight);
     delete uLeft; delete uRight;
     
@@ -87,6 +89,30 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
     camera = c;
 }
 
-Color* traceEye(EyeRay* e) {
+Color* Scene::traceEye(EyeRay* e) {
+    float t = -1.0;
+    Shape* s; Color* ret;
+    vector<Shape*>::iterator shape_it = world->shapeIter();
+    for (shape_it; shape_it != world->shapeIterEnd(); ++shape_it) {
+        float currT = (**shape_it).intersect(e);
+        if (currT < (unsigned) t && currT > 0) {
+            t = currT;
+            s = (*shape_it);
+        }
+    }
+    
+    if (t > 0) {
+        Point* inter = e->findPoint(t);
+        ret = s->calcBRDF(e, inter);
+        delete inter;
+    } else {
+        ret = NULL;
+    }
+
+    return ret;
+    
+}
+
+void Scene::render() {
     
 }
