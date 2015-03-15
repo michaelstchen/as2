@@ -138,12 +138,21 @@ void Matrix::setMatrix(float nmat[4][4]){
 //left-multiplies a transformation matrix created using tx, ty, and tz to "this"
 Matrix* makeTransl(float tx, float ty, float tz){
 	Matrix* transMatrix = new Matrix();
-	float nmat[4][4] = {
-		{ 1, 0, 0, tx },
-		{ 0, 1, 0, ty },
-		{ 0, 0, 1, tz },
-		{ 0, 0, 0, 1 }
-	};
-	transMatrix->setMatrix(nmat);
+	transMatrix->setVal(3, 0, tx);
+	transMatrix->setVal(3, 1, ty);
+	transMatrix->setVal(3, 2, tz);
+
+	//transMatrix->setMatrix(nmat);
 	return transMatrix;
+}
+
+Matrix* makeScale(float sx, float sy, float sz){
+	Matrix* scaleMatrix = new Matrix();
+
+	scaleMatrix->setVal(0, 0, sx);
+	scaleMatrix->setVal(1, 1, sy);
+	scaleMatrix->setVal(2, 2, sz);
+
+	//scaleMatrix->setMatrix(nmat);
+	return scaleMatrix;
 }
