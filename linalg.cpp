@@ -33,11 +33,27 @@ Point* add(Point* p, Vector* v) {
     return ret;
 }
 
-Vector* mult(Vector* v1, float scalar) {
+Point* add(Point* p1, Point* p2) {
+    Point* ret = new Point();
+    ret->x = p1->x + p2->x;
+    ret->y = p1->y + p2->y;
+    ret->z = p1->z + p2->z;
+    return ret;
+}
+
+Vector* mult(Vector* v, float scalar) {
     Vector* ret = new Vector();
-    ret->x = v1->x * scalar;
-    ret->y = v1->y * scalar;
-    ret->z = v1->z * scalar;
+    ret->x = v->x * scalar;
+    ret->y = v->y * scalar;
+    ret->z = v->z * scalar;
+    return ret;
+}
+
+Point* mult(Point* p, float scalar) {
+    Point* ret = new Point();
+    ret->x = p->x * scalar;
+    ret->y = p->y * scalar;
+    ret->z = p->z * scalar;
     return ret;
 }
 

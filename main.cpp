@@ -63,7 +63,7 @@ int writeImage(char const* filename, int width, int height, int* buffer) {
 	int x, y;
 	for (y=0 ; y<height ; y++) {
 		for (x=0 ; x<width ; x++) {
-                    row[x*3] = buffer[y*width + x];
+                    row[x*3] = 255;
                     row[x*3 + 1] = buffer[y*width + x + 1];
                     row[x*3 + 2] = buffer[y*width + x + 2];
 		}

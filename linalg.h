@@ -18,7 +18,9 @@ class Vector {
 
 Vector* add(Vector* v1, Vector* v2);
 Point* add(Point* p, Vector* v);
+Point* add(Point* p1, Point* p2);
 Vector* mult(Vector* v, float scalar);
+Point* mult(Point* p, float scalar);
 float dot(Vector* v1, Vector* v2);
 /* returns a pointer to v1 x v2 */
 Vector* cross(Vector* v1, Vector* v2);
