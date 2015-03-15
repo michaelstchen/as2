@@ -45,6 +45,7 @@ class Matrix {
     void print();
     Matrix* invert();
     Matrix* transpose();
+	Matrix* compose(Matrix* a, Matrix* b);
 };
 
 Matrix* makeTransl(float tx, float ty, float tz);
