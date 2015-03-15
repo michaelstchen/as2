@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
     ImgPlane* view = new ImgPlane(new Point(-5.0,-5.0,0.0), new Point(5.0,-5.0,0.0), new Point(-5.0,5.0,0.0), new Point(5.0,5.0,0.0), width, height);
     World* world = new World();
 
-    world->addShape(new Sphere(new Point(0.0,0.0,1.0), 3.0, world, NULL));
+    world->addShape(new Sphere(new Point(-1.0,-1.0,1.0), 3.0, world, NULL));
 
     Scene* scene = new Scene(world, view, camera);
 
@@ -105,6 +105,9 @@ int main(int argc, char* argv[]) {
     printf("Saving PNG\n");
     int result = writeImage("output.png", width, height, scene->view);
     
+    world->clearMem();
+    view->clearMem();
+    scene->clearMem();
 
     return result;
 }

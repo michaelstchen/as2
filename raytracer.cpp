@@ -35,6 +35,19 @@ vector<Shape*>::iterator World::shapeIterEnd() {
     return shapes.end();
 }
 
+void World::clearMem() {
+    vector<Light*>::iterator light_it = lightIter();
+    for (light_it; light_it != lightIterEnd(); ++light_it) {
+        delete *light_it;
+    }
+
+    vector<Shape*>::iterator shape_it = shapeIter();
+    for (shape_it; shape_it != shapeIterEnd(); ++shape_it) {
+        delete *shape_it;
+    }
+    
+}
+
 
 /* ImgPlane class implementations */
 ImgPlane::ImgPlane(Point* LL, Point* LR, Point* UL, Point* UR, int w, int h) {
@@ -81,6 +94,14 @@ Color* ImgPlane::getPixelColor(int i, int j) {
     return pixels[i + j*width];
 }
 
+void ImgPlane::clearMem() {
+    delete ll; delete lr; delete ul; delete ur;
+    vector<Color*>::iterator it = pixels.begin();
+    for (it; it != pixels.end(); ++it) {
+        delete *it;
+    }
+}
+
 
 /* Scene class implemetation. */
 Scene::Scene(World* w, ImgPlane* v, Point* c) {
@@ -125,4 +146,10 @@ void Scene::render() {
             view->setPixelColor(i, j, pixelColor);
         }
     }
+}
+
+void Scene::clearMem() {
+    delete world;
+    delete view;
+    delete camera;
 }
