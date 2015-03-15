@@ -85,8 +85,18 @@ Vector* newVector(Point* p1, Point* p2) {
     return ret;
 }
 
-//NEEDS TESTING
-Matrix* Matrix::compose(Matrix* m1, Matrix* m2){
+//-------------------------------------------------------------------------------------------------
+//NEEDS TESTING FOR ALL CODE UNDER HERE vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+float Matrix::getVal(int i, int j){
+	return mat[i][j];
+}
+
+void Matrix::setVal(int i, int j, float val){
+	mat[i][j] = val;
+}
+
+Matrix* compose(Matrix* m1, Matrix* m2){
 	Matrix* cmatrix = new Matrix();
 
 	for (int i = 0; i < 4; i++)
@@ -114,4 +124,26 @@ Matrix* Matrix::transpose() {
 		}
 	}
 	return tmatrix;
+}
+
+void Matrix::setMatrix(float nmat[4][4]){
+	for (int i = 0; i < 4; i++){
+		for (int j = 0; j < 4; j++){
+			mat[i][j] = nmat[i][j];
+		}
+	}
+}
+
+//REALLY REALLY NEEDS TESTING
+//left-multiplies a transformation matrix created using tx, ty, and tz to "this"
+Matrix* makeTransl(float tx, float ty, float tz){
+	Matrix* transMatrix = new Matrix();
+	float nmat[4][4] = {
+		{ 1, 0, 0, tx },
+		{ 0, 1, 0, ty },
+		{ 0, 0, 1, tz },
+		{ 0, 0, 0, 1 }
+	};
+	transMatrix->setMatrix(nmat);
+	return transMatrix;
 }
