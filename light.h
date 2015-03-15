@@ -4,6 +4,20 @@
 #include "property.h"
 #include "linalg.h"
 
+//*************************************************
+// Contains classes for the different lights
+//
+// The Classes:
+//
+//     --Light: superclass
+//     --Point_Light: a point light with a given falloff
+//                    defaults to 0 falloff.
+//     --Direct_Light: a directional light.
+//     --Ambient_Light: an ambient light.
+//
+//************************************************
+
+
 class Light {
  public:
     Point* pos;

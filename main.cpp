@@ -6,10 +6,14 @@
 #include "light.h"
 #include "property.h"
 
+//***************************************************
+// Parses input file, initializes objects, renders scene,
+// writes pixel data to png buffer. 
+//***************************************************
 
-//****************************************************
-// Helper Function to Write PNG
-//****************************************************
+
+
+/* Helper Function to Write PNG */
 
 int writeImage(char const* filename, int width, int height, ImgPlane* b) {
     	int code = 0;
@@ -87,9 +91,9 @@ int writeImage(char const* filename, int width, int height, ImgPlane* b) {
 }
 
 
-//****************************************************
-// Program Starting Point
-//****************************************************
+
+/* Program Starting Point */
+
 int main(int argc, char* argv[]) {
 
     int width = 500; int height = 500;
