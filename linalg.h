@@ -45,13 +45,12 @@ class Matrix {
     void print();
     Matrix* invert();
     Matrix* transpose();
-	Matrix* compose(Matrix* a, Matrix* b);
 };
 
 Matrix* makeTransl(float tx, float ty, float tz);
 Matrix* makeRot(float rx, float ry, float rz);
 Matrix* makeScale(float sx, float sy, float sz);
-//Matrix* compose(Matrix* a, Matrix* b);
+Matrix* compose(Matrix* a, Matrix* b);
 
 Point* matrixmult(Matrix* a, Point* b);
 Vector* matrixmult(Matrix* a, Vector* b);

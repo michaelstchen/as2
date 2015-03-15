@@ -31,12 +31,6 @@ class Sphere : public Shape {
 
 class Triangle : public Shape {
  public:
-	 Triangle(Point*  v1, Point* v2, Point* v3, Matrix* t, Material* m);
-	 Point* vertex1;
-	 Point* vertex2;
-	 Point* vertex3;
-	 float intersect(Ray* r);
-	 Vector* getNormal(Point* p);
     
 };
 

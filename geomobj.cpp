@@ -103,6 +103,3 @@ Vector* Sphere::getNormal(Point* p) {
     return newVector(p, center);
 }
 
-float Triangle::intersect(Ray* r){
-
-}
