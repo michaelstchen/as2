@@ -25,6 +25,14 @@ Vector* add(Vector* v1, Vector* v2) {
     return ret;
 }
 
+Vector* sub(Vector* v1, Vector* v2) {
+    Vector* ret = new Vector();
+    ret->x = v1->x - v2->x;
+    ret->y = v1->y - v2->y;
+    ret->z = v1->z - v2->z;
+    return ret;
+}
+
 Point* add(Point* p, Vector* v) {
     Point* ret = new Point();
     ret->x = p->x + v->x;

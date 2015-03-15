@@ -28,8 +28,13 @@ void Color::mult(float scalar) {
     b = b * scalar;
 }
 
+void Color::mult(Color* c) {
+    r = r * c->r;
+    g = g * c->g;
+    b = b * c->b;
+}
 
-Material::Material(Color kaIN, Color kdIN, Color ksIN, Color krIN, float kspIN) {
+Material::Material(Color* kaIN, Color* kdIN, Color* ksIN, Color* krIN, float kspIN) {
     ka = kaIN; kd = kdIN; ks = ksIN; kr = krIN;
     ksp = kspIN;
 }

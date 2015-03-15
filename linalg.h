@@ -17,6 +17,8 @@ class Vector {
 };
 
 Vector* add(Vector* v1, Vector* v2);
+/* v1 - v2 */
+Vector* sub(Vector* v1, Vector* v2);
 Point* add(Point* p, Vector* v);
 Point* add(Point* p1, Point* p2);
 Vector* mult(Vector* v, float scalar);

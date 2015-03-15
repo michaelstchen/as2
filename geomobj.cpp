@@ -1,19 +1,72 @@
 #include "geomobj.h"
 #include "ray.h"
 #include "linalg.h"
+#include "light.h"
+#include "raytracer.h"
+#include <vector>
 #include <cmath>
 #include <cstddef>
 #include <stdio.h>
 
-Shape::Shape(World* w, Matrix* t) {
+using namespace std;
+
+Shape::Shape(World* w, Matrix* t, Material* m) {
     world = w;
     transform = t;
+    material = m;
     Matrix* t_invert = t->invert();
     normT = t_invert->transpose();
     delete t_invert;
 }
 
-Sphere::Sphere(Point* c, float r, World* w, Matrix* t) : Shape(w, t) {
+Color* Shape::calcBRDF(Ray* ray, Point* p) {
+    Color* ret = new Color(0, 0, 0);
+    Vector* n = getNormal(p);
+    (ray->dir)->normalize();
+    n->normalize();
+
+    vector<Light*>::iterator it = world->lightIter();
+    for (it; it != world->lightIterEnd(); ++it) {
+        Vector* l;
+        if ((**it).isPointLight()) {
+            l = newVector((**it).pos, p);
+        } else if ((**it).isDirectLight()) {
+            l = mult((**it).dir, -1.0);
+        }
+
+        l->normalize();
+
+        Vector* r_temp = mult(n, 2 * dot(l, n));
+        Vector* r = sub(r_temp, l);
+        r->normalize();
+        delete r_temp;
+
+        float l_dot_n = dot(l, n);
+        float r_dot_v = dot(r, (ray->dir));
+        delete l; delete r;
+
+        Color* amb = new Color(1.0,1.0,1.0);
+        Color* diff = new Color(1.0,1.0,1.0);
+        Color* spec = new Color(1.0,1.0,1.0);
+
+        amb->mult(material->ka);
+
+        diff->mult(fmax(l_dot_n, 0.0));
+        diff->mult(material->kd);
+        
+        spec->mult(pow(fmax(r_dot_v, 0.0), material->ksp));
+        spec->mult(material->ks);
+
+        ret->add(amb); ret->add(diff); ret->add(spec);
+        delete amb; delete diff; delete spec;
+
+        ret->mult((**it).color);
+    }
+    delete n;
+    return ret;    
+}
+
+Sphere::Sphere(Point* c, float r, World* w, Matrix* t, Material* m) : Shape(w, t, m) {
     center = c;
     radius = r;
 }
@@ -50,6 +103,3 @@ Vector* Sphere::getNormal(Point* p) {
     return newVector(p, center);
 }
 
-Color* Sphere::calcBRDF(Ray* r, Point* p) {
-    return new Color(1.0, 0.0, 0.0);
-}

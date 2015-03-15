@@ -3,6 +3,8 @@
 #include <malloc.h>
 #include <png.h>
 #include "raytracer.h"
+#include "light.h"
+#include "property.h"
 
 
 //****************************************************
@@ -96,7 +98,10 @@ int main(int argc, char* argv[]) {
     ImgPlane* view = new ImgPlane(new Point(-5.0,-5.0,0.0), new Point(5.0,-5.0,0.0), new Point(-5.0,5.0,0.0), new Point(5.0,5.0,0.0), width, height);
     World* world = new World();
 
-    world->addShape(new Sphere(new Point(-1.0,-1.0,1.0), 3.0, world, NULL));
+    Material* m = new Material(new Color(0.05, 0.05, 0.05), new Color(1, 0, 0), new Color(1, 1, 1), NULL, 5);
+
+    world->addShape(new Sphere(new Point(-1.0,-1.0,1.0), 3.0, world, NULL, m));
+    world->addLight(new Point_Light(new Color(1,1,1), new Point(5,5,0), 0));
 
     Scene* scene = new Scene(world, view, camera);
 

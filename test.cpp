@@ -88,7 +88,7 @@ TEST(ColorTest, Color8Bit) {
 
 TEST(IntersectionTest, SphereTest0) {
     Point* c = new Point(0.0, 0.0, 0.0);
-    Sphere* s = new Sphere(c, 1, NULL, NULL);
+    Sphere* s = new Sphere(c, 1, NULL, NULL, NULL);
     
     Point* p = new Point(2, 0, 0);
     Vector* d = new Vector(0, 1, 0);
@@ -105,7 +105,7 @@ TEST(IntersectionTest, SphereTest0) {
 
 TEST(IntersectionTest, SphereTest1) {
     Point* c = new Point(0.0, 0.0, 0.0);
-    Sphere* s = new Sphere(c, 1, NULL, NULL);
+    Sphere* s = new Sphere(c, 1, NULL, NULL, NULL);
     
     Point* p = new Point(2, 1, 0);
     Vector* d = new Vector(-1, 0, 0);
@@ -123,7 +123,7 @@ TEST(IntersectionTest, SphereTest1) {
 
 TEST(IntersectionTest, SphereTest2) {
     Point* c = new Point(0.0, 0.0, 0.0);
-    Sphere* s = new Sphere(c, 1, NULL, NULL);
+    Sphere* s = new Sphere(c, 1, NULL, NULL, NULL);
     
     Point* p = new Point(2, 0, 0);
     Vector* d = new Vector(-1, 0, 0);
@@ -175,8 +175,6 @@ TEST(ImgPlaneTest, getPixelPos) {
     delete img;
 
 }
-
-
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest( &argc, argv );

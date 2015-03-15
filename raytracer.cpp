@@ -38,11 +38,16 @@ vector<Shape*>::iterator World::shapeIterEnd() {
 void World::clearMem() {
     vector<Light*>::iterator light_it = lightIter();
     for (light_it; light_it != lightIterEnd(); ++light_it) {
+        delete (**light_it).pos;
+        delete (**light_it).dir;
+        delete (**light_it).color;
         delete *light_it;
     }
 
     vector<Shape*>::iterator shape_it = shapeIter();
     for (shape_it; shape_it != shapeIterEnd(); ++shape_it) {
+        delete (**shape_it).transform; delete (**shape_it).normT;
+        delete ((**shape_it).material)->ka; delete ((**shape_it).material)->kd; delete ((**shape_it).material)->ks; delete ((**shape_it).material)->kr;
         delete *shape_it;
     }
     

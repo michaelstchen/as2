@@ -11,15 +11,15 @@ class Color {
     int bit8R(); int bit8B(); int bit8G();
     /* adds the RGB values of COLOR to this instance's RGB */
     void add(Color* color);
-    /* multiplies this instance's RGB values by a scalar */
     void mult(float scalar);
+    void mult(Color* c);
 };
 
 class Material {
  public:
     Material() {}
-    Material(Color kaIN, Color kdIN, Color ksIN, Color krIN, float kspIN);
-    Color ka; Color kd; Color ks; Color kr;
+    Material(Color* kaIN, Color* kdIN, Color* ksIN, Color* krIN, float kspIN);
+    Color* ka; Color* kd; Color* ks; Color* kr;
     float ksp;
 };
 
