@@ -24,6 +24,8 @@ class World {
     int numOfShapes();
     vector<Shape*>::iterator shapeIter();
     vector<Shape*>::iterator shapeIterEnd();
+
+    void clearMem();
 };
 
 class ImgPlane {
@@ -42,6 +44,8 @@ class ImgPlane {
     Point* getPixelPos(int i, int j);
     Color* getPixelColor(int i, int j);
     void setPixelColor(int i, int j, Color* c);
+
+    void clearMem();
 };
 
 class Scene {
@@ -53,6 +57,8 @@ class Scene {
     Color* traceEye(EyeRay* e);
     //Color* traceShadow(ShadowRay* s);
     void render();
+
+    void clearMem();
 };
 
 #endif

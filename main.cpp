@@ -9,7 +9,7 @@
 // Helper Function to Write PNG
 //****************************************************
 
-int writeImage(char const* filename, int width, int height, int* buffer) {
+int writeImage(char const* filename, int width, int height, ImgPlane* b) {
     	int code = 0;
 	FILE *fp;
 	png_structp png_ptr;
@@ -63,9 +63,11 @@ int writeImage(char const* filename, int width, int height, int* buffer) {
 	int x, y;
 	for (y=0 ; y<height ; y++) {
 		for (x=0 ; x<width ; x++) {
-                    row[x*3] = 255;
-                    row[x*3 + 1] = buffer[y*width + x + 1];
-                    row[x*3 + 2] = buffer[y*width + x + 2];
+                    Color* c = b->getPixelColor(x, y);
+                    row[x*3] = c->bit8R();
+                    row[x*3 + 1] = c->bit8B();
+                    row[x*3 + 2] = c->bit8G();
+                    delete c;
 		}
 		png_write_row(png_ptr, row);
 	}
@@ -90,14 +92,19 @@ int main(int argc, char* argv[]) {
 
     int width = 500; int height = 500;
 
-    int *buffer = (int*) calloc(width * height * 3, sizeof(int));
+    Point* camera = new Point(0.0, 0.0, -5.0);
+    ImgPlane* view = new ImgPlane(new Point(-5.0,-5.0,0.0), new Point(5.0,-5.0,0.0), new Point(-5.0,5.0,0.0), new Point(5.0,5.0,0.0), width, height);
+    World* world = new World();
+
+    world->addShape(new Sphere(new Point(0.0,0.0,1.0), 3.0, world, NULL));
+
+    Scene* scene = new Scene(world, view, camera);
+
+    scene->render();
 
     printf("Saving PNG\n");
-    int result = writeImage("output.png", width, height, buffer);
-
-    free(buffer);
+    int result = writeImage("output.png", width, height, scene->view);
+    
 
     return result;
 }
-
-

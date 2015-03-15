@@ -101,18 +101,28 @@ Color* Scene::traceEye(EyeRay* e) {
         }
     }
     
-    if (t > 0) {
-        Point* inter = e->findPoint(t);
+    Point* inter = e->findPoint(t);
+    if (inter != NULL) {
         ret = s->calcBRDF(e, inter);
-        delete inter;
     } else {
-        ret = NULL;
+        ret = new Color(0.0, 0.0, 0.0);
     }
 
+    delete inter;
     return ret;
     
 }
 
 void Scene::render() {
-    
+    for (int j = 0; j < view->getHeight(); j++) {
+        for (int i = 0; i < view->getWidth(); i++) {
+            Point* pixelLoc = view->getPixelPos(i, j);
+            Vector* eye_dir = newVector(camera, pixelLoc);
+            EyeRay* e = new EyeRay(camera, eye_dir);
+            Color* pixelColor = traceEye(e);
+
+            delete pixelLoc; delete eye_dir; delete e;
+            view->setPixelColor(i, j, pixelColor);
+        }
+    }
 }
