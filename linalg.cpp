@@ -85,11 +85,33 @@ Vector* newVector(Point* p1, Point* p2) {
     return ret;
 }
 
+//NEEDS TESTING
+Matrix* Matrix::compose(Matrix* m1, Matrix* m2){
+	Matrix* cmatrix = new Matrix();
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cmatrix->setVal(i, j, 0);
+			for (int k = 0; k < 4; k++){
+				cmatrix->setVal(i, j, cmatrix->getVal(i, j) + m1->getVal(i, k)*m2->getVal(k, j));
+			}
+		}
+	}
+	return cmatrix;
+}
 
 Matrix* Matrix::invert() {
     return NULL;
 }
 
 Matrix* Matrix::transpose() {
-    return NULL;
+	Matrix* tmatrix = new Matrix();
+	for (int i = 0; i < 4; i++){
+		for (int j = 0; j < 4; j++){
+			tmatrix->setVal(i, j, this->getVal(j, i));
+		}
+	}
+	return tmatrix;
 }
