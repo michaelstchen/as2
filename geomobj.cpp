@@ -20,9 +20,10 @@ Shape::Shape(World* w, Matrix* t, Material* m) {
 }
 
 Color* Shape::calcBRDF(Ray* ray, Point* p) {
-    Color* ret = new Color(0, 0, 0);
+    Color* ret = new Color(0.0, 0.0, 0.0);
     Vector* n = getNormal(p);
-    (ray->dir)->normalize();
+    Vector* v = mult(ray->dir, 1.0);
+    v->normalize();
     n->normalize();
 
     vector<Light*>::iterator it = world->lightIter();
@@ -36,14 +37,13 @@ Color* Shape::calcBRDF(Ray* ray, Point* p) {
 
         l->normalize();
 
-        Vector* r_temp = mult(n, 2 * dot(l, n));
+        Vector* r_temp = mult(n, 2.0 * dot(l, n));
         Vector* r = sub(r_temp, l);
-        r->normalize();
         delete r_temp;
 
         float l_dot_n = dot(l, n);
-        float r_dot_v = dot(r, (ray->dir));
-        delete l; delete r;
+        float r_dot_v = dot(r, v);
+        delete l; delete r; delete v;
 
         Color* amb = new Color(1.0,1.0,1.0);
         Color* diff = new Color(1.0,1.0,1.0);

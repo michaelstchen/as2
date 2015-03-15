@@ -1,19 +1,20 @@
 #include "property.h"
+#include <cmath>
 
 Color::Color(float rIn, float gIn, float bIn) {
     r = rIn; g = gIn; b = bIn;
 }
 
 int Color::bit8R() {
-    return r * 255;
+    return fmin(r * 255, 255);
 }
 
 int Color::bit8G() {
-    return g * 255;
+    return fmin(g * 255, 255);
 }
 
 int Color::bit8B() {
-    return b * 255;
+    return fmin(b * 255, 255);
 }
 
 void Color::add(Color* color) {
