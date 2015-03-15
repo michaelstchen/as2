@@ -17,7 +17,7 @@ int writeImage(char const* filename, int width, int height, ImgPlane* b) {
 	png_structp png_ptr;
 	png_infop info_ptr;
 	png_bytep row;
-	
+
 	// Open file for writing (binary mode)
 	fp = fopen(filename, "wb");
 	if (fp == NULL) {
@@ -111,8 +111,8 @@ int main(int argc, char* argv[]) {
     int result = writeImage("output.png", width, height, scene->view);
     
     world->clearMem();
-    view->clearMem();
+    //view->clearMem();
     scene->clearMem();
-
+    
     return result;
 }
