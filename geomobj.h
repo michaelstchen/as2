@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include "linalg.h"
+#include "light.h"
 #include "property.h"
 #include "ray.h"
 
@@ -41,6 +42,9 @@ class Shape {
     /* calculates the BRDF value at a point on this shape 
      * given the incident ray. */
     Color* calcBRDF(Ray* ray, Point* p);
+    /* returns true if the point P is in the shadow of an
+     * object with respect to a light  */
+    bool inShadow(Point* p, Light* l);
 };
 
 class Sphere : public Shape {

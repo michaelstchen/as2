@@ -28,6 +28,9 @@ Color* Shape::calcBRDF(Ray* ray, Point* p) {
     for (it; it != world->lightIterEnd(); ++it) {
         Vector* l;
         if ((**it).isPointLight()) {
+            if (inShadow(p, (*it))) {
+                continue;
+            }
             l = newVector((**it).pos, p);
         } else if ((**it).isDirectLight()) {
             l = mult((**it).dir, -1.0);
@@ -35,9 +38,8 @@ Color* Shape::calcBRDF(Ray* ray, Point* p) {
             Color* amb = new Color(1.0,1.0,1.0);
             amb->mult(material->ka);
             ret->add(amb);
-            delete amb;
             ret->mult((**it).color);
-            continue;
+            delete amb; continue;
         }
 
         l->normalize();
@@ -64,6 +66,22 @@ Color* Shape::calcBRDF(Ray* ray, Point* p) {
     }
     delete n;
     return ret; 
+}
+
+bool Shape::inShadow(Point* p, Light* l) {
+    Vector* p_to_l = newVector(l->pos, p);
+    ShadowRay* s = new ShadowRay(p, p_to_l);
+
+    vector<Shape*>::iterator it = world->shapeIter();
+    for (it; it != world->shapeIterEnd(); ++it) {
+        float t = intersect(s);
+        if (t >= s->t_min && t < s->t_max) {
+            delete p_to_l; delete s;
+            return true;
+        }
+    }
+    delete p_to_l; delete s;
+    return false;
 }
 
 Sphere::Sphere(Point* c, float r, World* w, Matrix* t, Material* m) : Shape(w, t, m) {
