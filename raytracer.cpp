@@ -151,7 +151,7 @@ void Scene::render() {
             Color* pixelColor = traceEye(e);
 
             view->setPixelColor(i, j, pixelColor);
-            delete pixelLoc; delete eye_dir; delete e;
+            delete pixelLoc; delete eye_dir; //delete e;
         }
     }
 }

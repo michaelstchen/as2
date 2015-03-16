@@ -94,7 +94,7 @@ int writeImage(char const* filename, int width, int height, ImgPlane* b) {
 Point* camera;
 
 ImgPlane* view;
-int width = 100; int height = 100;
+int width = 1000; int height = 1000;
 
 World* world = new World();
 
@@ -116,7 +116,7 @@ int main(int argc, char* argv[]) {
     world->addShape(new Sphere(new Point(-8.0,0,6.0), 5.0, world, NULL, m2));
 
     world->addLight(new Point_Light(new Color(1,1,1), new Point(10.0,0,0), 0));
-    //world->addLight(new Point_Light(new Color(1,1,1), new Point(-9,0,0), 0));
+    world->addLight(new Point_Light(new Color(1,1,1), new Point(-10,0,0), 0));
     world->addLight(new Ambient_Light(new Color(1, 1, 1)));
 
     scene = new Scene(world, view, camera);
