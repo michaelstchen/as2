@@ -107,15 +107,14 @@ int main(int argc, char* argv[]) {
     camera = new Point(0.0, 0.0, -5.0);
     view = new ImgPlane(new Point(-10.0,-10.0,0.0), new Point(10.0,-10.0,0.0), new Point(-10.0,10.0,0.0), new Point(10.0,10.0,0.0), width, height);
 
-    Material* m1 = new Material(new Color(0.05, 0.05, 0.05), new Color(1, 1, 1), new Color(1, 1, 1), NULL, 32);
-    Material* m2 = new Material(new Color(0.05, 0.05, 0.05), new Color(1, 1, 1), new Color(1, 1, 1), NULL, 32);
+    Material* m1 = new Material(new Color(0.05, 0.05, 0.05), new Color(1, 0, 0), new Color(1, 1, 1), NULL, 32);
+    Material* m2 = new Material(new Color(0.05, 0.05, 0.05), new Color(0, 0, 1), new Color(1, 1, 1), NULL, 32);
 
-    //world->addShape(new Sphere(new Point(8.0,0,6.0), 5.0, world, NULL, m1));
-    world->addShape(new Sphere(new Point(0.0,0,6.0), 5.0, world, NULL, m2));
+    world->addShape(new Sphere(new Point(8,0,6), 5.0, world, NULL, m1));
+    world->addShape(new Sphere(new Point(-8,0,6), 5.0, world, NULL, m2));
 
-
-    world->addLight(new Point_Light(new Color(0,1,0), new Point(-10,0,0), 0));
-    world->addLight(new Point_Light(new Color(1,0,0), new Point(10.0,0,0), 0));
+    world->addLight(new Point_Light(new Color(1,1,1), new Point(2,2,2), 0));
+    //world->addLight(new Point_Light(new Color(1,1,1), new Point(-2,2,2), 0));
     world->addLight(new Ambient_Light(new Color(1, 1, 1)));
 
     scene = new Scene(world, view, camera);

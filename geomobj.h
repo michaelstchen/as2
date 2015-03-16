@@ -43,8 +43,8 @@ class Shape {
      * given the incident ray. */
     void calcBRDF(Ray* ray, Point* p, Color* c);
     /* returns true if the point P is in the shadow of an
-     * object with respect to a light  */
-    bool inShadow(Point* p, Light* l);
+     * object with respect to a light in the direction L */
+    bool inShadow(Point* p, Vector* l);
 };
 
 class Sphere : public Shape {

@@ -27,20 +27,19 @@ void Shape::calcBRDF(Ray* ray, Point* p, Color* c) {
     for (it; it != world->lightIterEnd(); ++it) {
         Vector* l;
         if ((**it).isPointLight()) {
-            if (inShadow(p, (*it))) {
-                continue;
-            }
             l = newVector((**it).pos, p);
         } else if ((**it).isDirectLight()) {
-            l = mult((**it).dir, -1.0);
+            l = mult((**it).dir, 1.0);
         } else {
             Color* amb = new Color(1.0,1.0,1.0);
             amb->mult(material->ka);
             amb->mult((**it).color);
             c->add(amb);
-            delete amb;
-            continue;
+            delete amb; continue;
         }
+
+        Vector* negl = mult(l, -1.0);
+        if (inShadow(p, negl)) continue;
 
         l->normalize();
 
@@ -64,25 +63,24 @@ void Shape::calcBRDF(Ray* ray, Point* p, Color* c) {
         spec->mult((**it).color);
 
         c->add(diff); c->add(spec);
-        //delete diff; delete spec;
+        delete diff; delete spec;
     }
     delete n;
     delete v;
 }
 
-bool Shape::inShadow(Point* p, Light* l) {
-    Vector* p_to_l = newVector(l->pos, p);
-    ShadowRay* s = new ShadowRay(p, p_to_l);
+bool Shape::inShadow(Point* p, Vector* l) {
+    ShadowRay* s = new ShadowRay(p, l);
 
     vector<Shape*>::iterator it = world->shapeIter();
     for (it; it != world->shapeIterEnd(); ++it) {
-        float t = intersect(s);
-        if (t >= s->t_min && t < s->t_max) {
-            delete p_to_l; //delete s;
+        float t = (*it)->intersect(s);
+        if (t > s->t_min && t < s->t_max) {
+            //delete s;
             return true;
         }
     }
-    delete p_to_l; //delete s;
+    //delete s;
     return false;
 }
 
