@@ -76,11 +76,11 @@ bool Shape::inShadow(Point* p, Light* l) {
     for (it; it != world->shapeIterEnd(); ++it) {
         float t = intersect(s);
         if (t >= s->t_min && t < s->t_max) {
-            delete p_to_l; delete s;
+            delete p_to_l; //delete s;
             return true;
         }
     }
-    delete p_to_l; delete s;
+    delete p_to_l; //delete s;
     return false;
 }
 
