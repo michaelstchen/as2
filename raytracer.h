@@ -76,8 +76,7 @@ class Scene {
     World* world;
     ImgPlane* view;
     Point* camera;
-    Color* traceEye(EyeRay* e);
-    //Color* traceShadow(ShadowRay* s);
+    void traceEye(EyeRay* e, Color* c);
 
     /* renders our scene. stores pixel color data in the VIEW member obj 
      * (type ImgPlane). */

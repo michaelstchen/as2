@@ -116,9 +116,9 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
     camera = c;
 }
 
-Color* Scene::traceEye(EyeRay* e) {
+void Scene::traceEye(EyeRay* e, Color* c) {
     float t = -1.0;
-    Shape* s; Color* ret;
+    Shape* s;
 
     vector<Shape*>::iterator shape_it = world->shapeIter();
     for (shape_it; shape_it != world->shapeIterEnd(); ++shape_it) {
@@ -131,13 +131,10 @@ Color* Scene::traceEye(EyeRay* e) {
 
     Point* inter = e->findPoint(t);
     if (inter != NULL) {
-        ret = s->calcBRDF(e, inter);
-    } else {
-        ret = new Color(0.0, 0.0, 0.0);
+        s->calcBRDF(e, inter, c);
     }
 
     delete inter;
-    return ret;
     
 }
 
@@ -148,9 +145,14 @@ void Scene::render() {
             Vector* eye_dir = newVector(camera, pixelLoc);
             EyeRay* e = new EyeRay(camera, eye_dir);
 
-            Color* pixelColor = traceEye(e);
+            Color* c = view->getPixelColor(i, j);
+            if (c==NULL) {
+                view->setPixelColor(i, j, new Color(0,0,0));;
+                c = view->getPixelColor(i, j);
+            }
 
-            view->setPixelColor(i, j, pixelColor);
+            traceEye(e, c);
+
             delete pixelLoc; delete eye_dir; //delete e;
         }
     }

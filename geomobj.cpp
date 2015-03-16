@@ -16,9 +16,8 @@ Shape::Shape(World* w, Matrix* t, Material* m) {
     material = m;
 }
 
-Color* Shape::calcBRDF(Ray* ray, Point* p) {
+void Shape::calcBRDF(Ray* ray, Point* p, Color* c) {
 
-    Color* ret = new Color(0.0, 0.0, 0.0);
     Vector* n = getNormal(p);
     Vector* v = mult(ray->dir, 1.0);
     v->normalize();
@@ -37,9 +36,10 @@ Color* Shape::calcBRDF(Ray* ray, Point* p) {
         } else {
             Color* amb = new Color(1.0,1.0,1.0);
             amb->mult(material->ka);
-            ret->add(amb);
-            ret->mult((**it).color);
-            delete amb; continue;
+            amb->mult((**it).color);
+            c->add(amb);
+            delete amb;
+            continue;
         }
 
         l->normalize();
@@ -50,22 +50,24 @@ Color* Shape::calcBRDF(Ray* ray, Point* p) {
 
         float l_dot_n = dot(l, n);
         float r_dot_v = dot(r, v);
-        delete l; delete r; delete v;
+        delete l; delete r;
 
         Color* diff = new Color(1.0,1.0,1.0);
         Color* spec = new Color(1.0,1.0,1.0);
 
         diff->mult(fmax(l_dot_n, 0.0));
         diff->mult(material->kd);
+        diff->mult((**it).color);
 
         spec->mult(pow(fmax(r_dot_v, 0.0), material->ksp));
         spec->mult(material->ks);
+        spec->mult((**it).color);
 
-        ret->add(diff); ret->add(spec);
-        ret->mult((**it).color);
+        c->add(diff); c->add(spec);
+        //delete diff; delete spec;
     }
     delete n;
-    return ret; 
+    delete v;
 }
 
 bool Shape::inShadow(Point* p, Light* l) {
