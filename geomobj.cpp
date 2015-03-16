@@ -33,6 +33,13 @@ Color* Shape::calcBRDF(Ray* ray, Point* p) {
             l = newVector((**it).pos, p);
         } else if ((**it).isDirectLight()) {
             l = mult((**it).dir, -1.0);
+        } else {
+            Color* amb = new Color(1.0,1.0,1.0);
+            amb->mult(material->ka);
+            ret->add(amb);
+            delete amb;
+            ret->mult((**it).color);
+            continue;
         }
 
         l->normalize();
@@ -45,11 +52,8 @@ Color* Shape::calcBRDF(Ray* ray, Point* p) {
         float r_dot_v = dot(r, v);
         delete l; delete r; delete v;
 
-        Color* amb = new Color(1.0,1.0,1.0);
         Color* diff = new Color(1.0,1.0,1.0);
         Color* spec = new Color(1.0,1.0,1.0);
-
-        amb->mult(material->ka);
 
         diff->mult(fmax(l_dot_n, 0.0));
         diff->mult(material->kd);
@@ -57,8 +61,8 @@ Color* Shape::calcBRDF(Ray* ray, Point* p) {
         spec->mult(pow(fmax(r_dot_v, 0.0), material->ksp));
         spec->mult(material->ks);
 
-        ret->add(amb); ret->add(diff); ret->add(spec);
-        delete amb; delete diff; delete spec;
+        ret->add(diff); ret->add(spec);
+        delete diff; delete spec;
 
         ret->mult((**it).color);
     }

@@ -106,6 +106,7 @@ int main(int argc, char* argv[]) {
 
     world->addShape(new Sphere(new Point(0.0,0.0,6.0), 5.0, world, NULL, m));
     world->addLight(new Point_Light(new Color(1,1,1), new Point(2,2,0), 0));
+    world->addLight(new Ambient_Light(new Color(1, 1, 1)));
 
     Scene* scene = new Scene(world, view, camera);
 
