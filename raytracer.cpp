@@ -58,7 +58,7 @@ void World::clearMem() {
 ImgPlane::ImgPlane(Point* LL, Point* LR, Point* UL, Point* UR, int w, int h) {
     ll = LL; lr = LR; ul = UL; ur = UR;
     height = h; width = w;
-    pixels.resize(height*width, new Color(0.0, 0.0, 0.0));
+    pixels.resize(height*width, NULL);
 }
 
 int ImgPlane::getHeight() {
@@ -85,6 +85,7 @@ Point* ImgPlane::getPixelPos(int i, int j) {
 
     Point* uLeft = mult(left, 1.0 - u);
     Point* uRight = mult(right, u);
+    delete left; delete right;
     Point* ret = add(uLeft, uRight);
     delete uLeft; delete uRight;
     
@@ -92,7 +93,7 @@ Point* ImgPlane::getPixelPos(int i, int j) {
 }
 
 void ImgPlane::setPixelColor(int i, int j, Color* c) {
-    pixels[i + j*width] = c;
+    pixels[i + j*width]=c;
 }
 
 Color* ImgPlane::getPixelColor(int i, int j) {
@@ -118,6 +119,7 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
 Color* Scene::traceEye(EyeRay* e) {
     float t = -1.0;
     Shape* s; Color* ret;
+
     vector<Shape*>::iterator shape_it = world->shapeIter();
     for (shape_it; shape_it != world->shapeIterEnd(); ++shape_it) {
         float currT = (**shape_it).intersect(e);
@@ -126,7 +128,7 @@ Color* Scene::traceEye(EyeRay* e) {
             s = (*shape_it);
         }
     }
-    
+
     Point* inter = e->findPoint(t);
     if (inter != NULL) {
         ret = s->calcBRDF(e, inter);
@@ -145,10 +147,11 @@ void Scene::render() {
             Point* pixelLoc = view->getPixelPos(i, j);
             Vector* eye_dir = newVector(camera, pixelLoc);
             EyeRay* e = new EyeRay(camera, eye_dir);
+
             Color* pixelColor = traceEye(e);
 
-            delete pixelLoc; delete eye_dir; delete e;
             view->setPixelColor(i, j, pixelColor);
+            delete pixelLoc; delete eye_dir; delete e;
         }
     }
 }

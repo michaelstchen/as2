@@ -36,11 +36,11 @@ class EyeRay : public Ray {
     EyeRay(Point* p, Vector* d);
 };
 
-/*
+
 class ShadowRay: public Ray {
  public:
     ShadowRay(Point* p, Vector* d);
-}
-*/
+};
+
 
 #endif

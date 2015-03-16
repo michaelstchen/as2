@@ -14,12 +14,10 @@ Shape::Shape(World* w, Matrix* t, Material* m) {
     world = w;
     transform = t;
     material = m;
-    Matrix* t_invert = t->invert();
-    normT = t_invert->transpose();
-    delete t_invert;
 }
 
 Color* Shape::calcBRDF(Ray* ray, Point* p) {
+
     Color* ret = new Color(0.0, 0.0, 0.0);
     Vector* n = getNormal(p);
     Vector* v = mult(ray->dir, 1.0);
@@ -57,17 +55,15 @@ Color* Shape::calcBRDF(Ray* ray, Point* p) {
 
         diff->mult(fmax(l_dot_n, 0.0));
         diff->mult(material->kd);
-        
+
         spec->mult(pow(fmax(r_dot_v, 0.0), material->ksp));
         spec->mult(material->ks);
 
         ret->add(diff); ret->add(spec);
-        delete diff; delete spec;
-
         ret->mult((**it).color);
     }
     delete n;
-    return ret;    
+    return ret; 
 }
 
 Sphere::Sphere(Point* c, float r, World* w, Matrix* t, Material* m) : Shape(w, t, m) {
