@@ -71,8 +71,8 @@ int writeImage(char const* filename, int width, int height, ImgPlane* b) {
 		for (x=0 ; x<width ; x++) {
                     Color* c = b->getPixelColor(x, y);
                     row[x*3] = c->bit8R();
-                    row[x*3 + 1] = c->bit8B();
-                    row[x*3 + 2] = c->bit8G();
+                    row[x*3 + 1] = c->bit8G();
+                    row[x*3 + 2] = c->bit8B();
                     //delete c;
 		}
 		png_write_row(png_ptr, row);
@@ -104,18 +104,18 @@ Scene* scene;
 /* Program Starting Point */
 int main(int argc, char* argv[]) {
 
-    camera = new Point(0, 0, -15);
-    view = new ImgPlane(new Point(-10.0,-10.0,0.0), new Point(10.0,-10.0,0.0), new Point(-10.0,10.0,0.0), new Point(10.0,10.0,0.0), width, height);
+    camera = new Point(0, 0, 10);
+    view = new ImgPlane(new Point(-5,-5,5), new Point(5,-5,5), new Point(-5,5,5), new Point(5,5,5), width, height);
 
-    Material* m1 = new Material(new Color(0.05, 0, 0), new Color(1, 0, 0), new Color(1, 1, 1), new Color(0.5, 0.5, 0.5), 32);
-    Material* m2 = new Material(new Color(0, 0, 0.05), new Color(0, 0, 1), new Color(1, 1, 1), new Color(0.5, 0.5, 0.5), 32);
+    Material* m1 = new Material(new Color(0.1, 0, 0.1), new Color(1, 0, 1), new Color(1, 1, 1), new Color(.3, .3, .3), 32);
+    Material* m2 = new Material(new Color(0, 0.1, 0.1), new Color(0, 1, 1), new Color(1, 1, 1), new Color(.3, .3, .3), 32);
 
-    world->addShape(new Sphere(new Point(7,0,2), 1.0, world, NULL, m1));
-    world->addShape(new Sphere(new Point(0,0,8), 5.0, world, NULL, m2));
+    world->addShape(new Sphere(new Point(-3,0,0), 3.0, world, NULL, m1));
+    world->addShape(new Sphere(new Point(3,0,0), 3.0, world, NULL, m2));
 
     //world->addLight(new Point_Light(new Color(1,1,1), new Point(25,0,-5), 0));
-    world->addLight(new Direct_Light(new Color(1,1,1), new Vector(-1,0,0.5)));
-    world->addLight(new Ambient_Light(new Color(1, 1, 1)));
+    world->addLight(new Direct_Light(new Color(1,1,1), new Vector(0,0,-1)));
+    //world->addLight(new Ambient_Light(new Color(1, 1, 1)));
 
     scene = new Scene(world, view, camera);
     scene->render();
