@@ -36,6 +36,10 @@ class EyeRay : public Ray {
     EyeRay(Point* p, Vector* d);
 };
 
+class ReflectRay : public Ray {
+ public:
+    ReflectRay(Point* p, Vector* d);
+};
 
 class ShadowRay: public Ray {
  public:

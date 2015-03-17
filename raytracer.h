@@ -42,7 +42,6 @@ class World {
     vector<Shape*>::iterator shapeIter();
     vector<Shape*>::iterator shapeIterEnd();
 
-    void clearMem();
 };
 
 class ImgPlane {
@@ -67,7 +66,6 @@ class ImgPlane {
     Color* getPixelColor(int i, int j);
     void setPixelColor(int i, int j, Color* c);
 
-    void clearMem();
 };
 
 class Scene {
@@ -76,13 +74,12 @@ class Scene {
     World* world;
     ImgPlane* view;
     Point* camera;
-    Color* traceRay(Ray* e);
+    Color* traceRay(Ray* e, int depth);
 
     /* renders our scene. stores pixel color data in the VIEW member obj 
      * (type ImgPlane). */
     void render();
 
-    void clearMem();
 };
 
 #endif

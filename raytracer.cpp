@@ -1,6 +1,7 @@
 #include <vector>
 #include <stdio.h>
 #include "raytracer.h"
+#include "geomobj.h"
 
 /* World class implemetations */
 void World::addLight(Light* l) {
@@ -33,24 +34,6 @@ vector<Shape*>::iterator World::shapeIter() {
 
 vector<Shape*>::iterator World::shapeIterEnd() {
     return shapes.end();
-}
-
-void World::clearMem() {
-    vector<Light*>::iterator light_it = lightIter();
-    for (light_it; light_it != lightIterEnd(); ++light_it) {
-        delete (**light_it).pos;
-        delete (**light_it).dir;
-        delete (**light_it).color;
-        delete *light_it;
-    }
-
-    vector<Shape*>::iterator shape_it = shapeIter();
-    for (shape_it; shape_it != shapeIterEnd(); ++shape_it) {
-        delete (**shape_it).transform; delete (**shape_it).normT;
-        delete ((**shape_it).material)->ka; delete ((**shape_it).material)->kd; delete ((**shape_it).material)->ks; delete ((**shape_it).material)->kr;
-        delete *shape_it;
-    }
-    
 }
 
 
@@ -100,14 +83,6 @@ Color* ImgPlane::getPixelColor(int i, int j) {
     return pixels[i + j*width];
 }
 
-void ImgPlane::clearMem() {
-    delete ll; delete lr; delete ul; delete ur;
-    vector<Color*>::iterator it = pixels.begin();
-    for (it; it != pixels.end(); ++it) {
-        delete *it;
-    }
-}
-
 
 /* Scene class implemetation. */
 Scene::Scene(World* w, ImgPlane* v, Point* c) {
@@ -116,10 +91,12 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
     camera = c;
 }
 
-Color* Scene::traceRay(Ray* e) {
+Color* Scene::traceRay(Ray* e, int depth) {
     Color* c = new Color(0,0,0);
     Shape* s;
     float t = -1.0;
+
+    if (depth <= 0) return c;
 
     vector<Shape*>::iterator shape_it = world->shapeIter();
     for (shape_it; shape_it != world->shapeIterEnd(); ++shape_it) {
@@ -135,6 +112,18 @@ Color* Scene::traceRay(Ray* e) {
         Color* brdf = s->calcBRDF(e, inter);
         c->add(brdf);
         delete brdf;
+
+        Vector* n = s->getNormal(inter);
+        n->normalize(); (e->dir)->normalize();
+        Vector* r_temp = mult(n, 2.0 * dot(e->dir, n));
+        Vector* r = sub(e->dir, r_temp);
+        delete r_temp;
+
+        ReflectRay* rray = new ReflectRay(inter, r);
+        Color* refl = traceRay(rray, --depth);
+        c->add(refl);
+        delete n; delete r; delete refl;
+
     }
 
     delete inter;
@@ -149,15 +138,9 @@ void Scene::render() {
             Vector* eye_dir = newVector(camera, pixelLoc);
             EyeRay* e = new EyeRay(camera, eye_dir);
 
-            view->setPixelColor(i, j, traceRay(e));
+            view->setPixelColor(i, j, traceRay(e, 3));
 
             delete pixelLoc; delete eye_dir;
         }
     }
-}
-
-void Scene::clearMem() {
-    delete world;
-    delete view;
-    delete camera;
 }

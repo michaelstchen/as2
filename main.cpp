@@ -123,9 +123,5 @@ int main(int argc, char* argv[]) {
     printf("Saving PNG\n");
     int result = writeImage("output.png", width, height, scene->view);
     
-    //world->clearMem();
-    //view->clearMem();
-    //scene->clearMem();
-    
     return result;
 }

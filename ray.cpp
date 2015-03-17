@@ -25,6 +25,11 @@ EyeRay::EyeRay(Point* p, Vector* d) : Ray(p, d) {
     t_max = INFINITY;
 }
 
+ReflectRay::ReflectRay(Point* p, Vector* d) : Ray(p, d) {
+    t_min = 0.00001;
+    t_max = INFINITY;
+}
+
 ShadowRay::ShadowRay(Point* p, Vector* d, float max) : Ray(p, d) {
     t_min = 0.00001;
     t_max = max;
