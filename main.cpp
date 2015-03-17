@@ -1,5 +1,8 @@
+#include <cstdlib>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
+#include <vector>
 #include <malloc.h>
 #include <png.h>
 #include "raytracer.h"
@@ -11,7 +14,15 @@
 // writes pixel data to png buffer. 
 //***************************************************
 
+/* GLOBAL VARIABLES */
+Point* camera;
 
+ImgPlane* view;
+int width = 1000; int height = 1000;
+
+World* world = new World();
+
+Scene* scene;
 
 /* Helper Function to Write PNG */
 
@@ -90,32 +101,110 @@ int writeImage(char const* filename, int width, int height, ImgPlane* b) {
 	return code;
 }
 
-/* GLOBAL VARIABLES */
-Point* camera;
+/* Helper Function to Parse Instructions From File */
+int readFile(int argc, char* argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "ERROR: Please specify one input file\n");
+        return 1;
+    }
 
-ImgPlane* view;
-int width = 1000; int height = 1000;
+    FILE* finput = fopen(argv[1], "r");
+    if (finput == NULL) {
+        fprintf(stderr, "ERROR: cannot open file '%s'\n", argv[1]);
+        return 2;
+    }
 
-World* world = new World();
+    Matrix* t = new Matrix();
+    Material* mat;
 
-Scene* scene;
+    char line[110];
+    char* pch;
+    while(fgets(line, sizeof(line), finput)) {
+        if ((pch = strtok(line, " \t\n")) == NULL) break;
+        vector<float> p;
+        bool arg_err = false;
+
+        while ((pch = strtok(NULL, " \t\n")) != NULL) {
+            p.push_back(atof(pch));
+        }
+
+        if (!strcmp(pch, "cam")) {
+            if (p.size() == 15) {
+                camera = new Point(p[0], p[1], p[2]);
+                printf("\n6\n");
+                view = new ImgPlane(new Point(p[3],p[4],p[5]), 
+                                    new Point(p[6],p[7],p[8]), 
+                                    new Point(p[9],p[10],p[11]), 
+                                    new Point(p[12],p[13],p[14]), 
+                                    width, height);
+            } else {
+                arg_err = true;
+            }
+        } else if (!strcmp(pch, "sph")) {
+            if (p.size() == 4) {
+                world->addShape(new Sphere(new Point(p[0],p[1],p[2]), p[3],
+                                           world, t, mat));
+            } else {
+                arg_err = true;
+            }
+        } else if (!strcmp(pch, "tri")) {
+
+        } else if (!strcmp(pch, "obj")) {
+
+        } else if (!strcmp(pch, "ltp")) {
+            if (p.size() == 6) {
+                world->addLight(new Point_Light(new Color(p[3],p[4],p[5]),
+                                                new Point(p[0],p[1],p[2]),
+                                                0));
+            } else if (p.size() == 7) {
+                world->addLight(new Point_Light(new Color(p[3],p[4],p[5]),
+                                                new Point(p[0],p[1],p[2]),
+                                                p[6]));
+            } else {
+                arg_err = true;
+            }
+        } else if (!strcmp(pch, "ltd")) {
+            if (p.size() == 6) {
+                world->addLight(new Direct_Light(new Color(p[3],p[4],p[5]),
+                                                 new Vector(p[0],p[1],p[2])));
+            } else {
+                arg_err = true;
+            }
+        } else if (!strcmp(pch, "lta")) {
+            if (p.size() == 3) {
+                world->addLight(new Ambient_Light(new Color(p[0],p[1],p[2])));
+            } else {
+                arg_err = true;
+            }
+        } else if (!strcmp(pch, "mat")) {
+            if (p.size() == 13) {
+                mat = new Material(new Color(p[0],p[1],p[2]), new Color(p[3],p[4],p[5]), new Color(p[6],p[7],p[8]), new Color(p[10],p[11],p[12]), p[9]);
+            } else {
+                arg_err = true;
+            }
+        } else if (!strcmp(pch, "xft")) {
+
+        } else if (!strcmp(pch, "xfr")) {
+
+        } else if (!strcmp(pch, "xfs")) {
+
+        } else if (!strcmp(pch, "xfz")) {
+
+        } else {
+            fprintf(stderr, "ERROR: unrecognized command '%s'\n", pch);
+        }
+
+        if (arg_err) fprintf(stderr, "ERROR: parameter error for '%s'\n", pch);
+    }
+    return 0;
+}
 
 
 /* Program Starting Point */
 int main(int argc, char* argv[]) {
 
-    camera = new Point(0, 0, 10);
-    view = new ImgPlane(new Point(-5,-5,5), new Point(5,-5,5), new Point(-5,5,5), new Point(5,5,5), width, height);
-
-    Material* m1 = new Material(new Color(0.1, 0, 0.1), new Color(1, 0, 1), new Color(1, 1, 1), new Color(.3, .3, .3), 32);
-    Material* m2 = new Material(new Color(0, 0.1, 0.1), new Color(0, 1, 1), new Color(1, 1, 1), new Color(.3, .3, .3), 32);
-
-    world->addShape(new Sphere(new Point(-3,0,0), 3.0, world, NULL, m1));
-    world->addShape(new Sphere(new Point(3,0,0), 3.0, world, NULL, m2));
-
-    //world->addLight(new Point_Light(new Color(1,1,1), new Point(25,0,-5), 0));
-    world->addLight(new Direct_Light(new Color(1,1,1), new Vector(0,0,-1)));
-    //world->addLight(new Ambient_Light(new Color(1, 1, 1)));
+    int read_ret = readFile(argc, argv);
+    if (read_ret) return read_ret;
 
     scene = new Scene(world, view, camera);
     scene->render();
