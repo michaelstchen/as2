@@ -39,7 +39,7 @@ class EyeRay : public Ray {
 
 class ShadowRay: public Ray {
  public:
-    ShadowRay(Point* p, Vector* d);
+    ShadowRay(Point* p, Vector* d, float max);
 };
 
 

@@ -25,6 +25,9 @@ void Shape::calcBRDF(Ray* ray, Point* p, Color* c) {
 
     vector<Light*>::iterator it = world->lightIter();
     for (it; it != world->lightIterEnd(); ++it) {
+
+        if (inShadow(p, *it)) continue;
+
         Vector* l;
         if ((**it).isPointLight()) {
             l = newVector((**it).pos, p);
@@ -37,9 +40,6 @@ void Shape::calcBRDF(Ray* ray, Point* p, Color* c) {
             c->add(amb);
             delete amb; continue;
         }
-
-        Vector* negl = mult(l, -1.0);
-        if (inShadow(p, negl)) continue;
 
         l->normalize();
 
@@ -69,18 +69,28 @@ void Shape::calcBRDF(Ray* ray, Point* p, Color* c) {
     delete v;
 }
 
-bool Shape::inShadow(Point* p, Vector* l) {
-    ShadowRay* s = new ShadowRay(p, l);
+bool Shape::inShadow(Point* p, Light* l) {
+    Vector* p_to_l;
+    ShadowRay* s;
+    
+    if (l->isPointLight()) {
+        p_to_l = newVector(p, l->pos);
+        s = new ShadowRay(p, p_to_l, INFINITY);
+    } else if (l->isDirectLight()) {
+        p_to_l = mult(l->dir, -1.0);
+        s = new ShadowRay(p, p_to_l, INFINITY);
+    } else {
+        return false;
+    }
 
     vector<Shape*>::iterator it = world->shapeIter();
     for (it; it != world->shapeIterEnd(); ++it) {
         float t = (*it)->intersect(s);
+        
         if (t > s->t_min && t < s->t_max) {
-            //delete s;
             return true;
         }
     }
-    //delete s;
     return false;
 }
 
