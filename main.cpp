@@ -124,14 +124,14 @@ int readFile(int argc, char* argv[]) {
         vector<float> p;
         bool arg_err = false;
 
-        while ((pch = strtok(NULL, " \t\n")) != NULL) {
-            p.push_back(atof(pch));
+        char* params;
+        while ((params = strtok(NULL, " \t\n")) != NULL) {
+            p.push_back(atof(params));
         }
 
         if (!strcmp(pch, "cam")) {
             if (p.size() == 15) {
                 camera = new Point(p[0], p[1], p[2]);
-                printf("\n6\n");
                 view = new ImgPlane(new Point(p[3],p[4],p[5]), 
                                     new Point(p[6],p[7],p[8]), 
                                     new Point(p[9],p[10],p[11]), 

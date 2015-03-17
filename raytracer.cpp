@@ -121,6 +121,7 @@ Color* Scene::traceRay(Ray* e, int depth) {
 
         ReflectRay* rray = new ReflectRay(inter, r);
         Color* refl = traceRay(rray, --depth);
+        refl->mult(s->material->kr);
         c->add(refl);
         delete n; delete r; delete refl;
 
