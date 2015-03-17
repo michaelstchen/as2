@@ -116,7 +116,7 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
     camera = c;
 }
 
-void Scene::traceEye(EyeRay* e, Color* c) {
+void Scene::traceRay(Ray* e, Color* c) {
     float t = -1.0;
     Shape* s;
 
@@ -151,7 +151,7 @@ void Scene::render() {
                 c = view->getPixelColor(i, j);
             }
 
-            traceEye(e, c);
+            traceRay(e, c);
 
             delete pixelLoc; delete eye_dir; //delete e;
         }
