@@ -131,3 +131,45 @@ Vector* Sphere::getNormal(Point* p) {
     return newVector(p, center);
 }
 
+
+Triangle::Triangle(Point* p0, Point* p1, Point* p2,
+                   World* w, Matrix* t, Material* m) : Shape(w, t, m) {
+    pa = p0;
+    pb = p1;
+    pc = p2;
+}
+
+float Triangle::intersect(Ray* r) {
+    Vector* a_min_b = newVector(pb, pa);
+    Vector* a_min_c = newVector(pc, pa);
+
+    float a = a_min_b->x; float b = a_min_b->y; float c = a_min_b->z;
+    float d = a_min_c->x; float e = a_min_c->y; float f = a_min_c->z;
+    float g = (r->dir)->x; float h = (r->dir)->y; float i = (r->dir)->z;
+    float j = pa->x - (r->p0)->x;
+    float k = pa->y - (r->p0)->y;
+    float l = pa->z - (r->p0)->z;
+    float M = a*(e*i - h*f) + b*(g*f - d*i) + c*(d*h - e*g);
+    delete a_min_b; delete a_min_c;
+
+    float t = -(f*(a*k - j*b) + e*(j*c - a*l) + d*(b*l - k*c)) / M;
+    if (t < r->t_min || t > r->t_max) return -1.0;
+
+    float gamma = (i*(a*k - j*b) + h*(j*c - a*l) + g*(b*l - k*c)) / M;
+    if (gamma < 0 || gamma > 1) return -1.0;
+
+    float beta = (j*(e*i - h*f) + k*(g*f - d*i) + l*(d*h - e*g)) / M;
+    if (beta < 0 || beta > 1 - gamma) return -1.0;
+
+    return t;   
+}
+
+Vector* Triangle::getNormal(Point* p) {
+    Vector* b_min_a = newVector(pa, pb);
+    Vector* c_min_a = newVector(pa, pc);
+
+    Vector* ret = cross(b_min_a, c_min_a);
+    delete b_min_a; delete c_min_a;
+
+    return ret;
+}
