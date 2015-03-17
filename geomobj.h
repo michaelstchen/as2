@@ -41,7 +41,7 @@ class Shape {
     virtual Vector* getNormal(Point* p) {return NULL;}
     /* calculates the BRDF value at a point on this shape 
      * given the incident ray. */
-    void calcBRDF(Ray* ray, Point* p, Color* c);
+    Color* calcBRDF(Ray* ray, Point* p);
     /* returns true if the point P is in the shadow of an
      * object with respect to a light L */
     bool inShadow(Point* p, Light* l);

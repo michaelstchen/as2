@@ -104,11 +104,11 @@ Scene* scene;
 /* Program Starting Point */
 int main(int argc, char* argv[]) {
 
-    camera = new Point(0.0, 0.0, -5.0);
+    camera = new Point(0, 0, -15);
     view = new ImgPlane(new Point(-10.0,-10.0,0.0), new Point(10.0,-10.0,0.0), new Point(-10.0,10.0,0.0), new Point(10.0,10.0,0.0), width, height);
 
-    Material* m1 = new Material(new Color(0.05, 0, 0), new Color(1, 0, 0), new Color(1, 1, 1), NULL, 32);
-    Material* m2 = new Material(new Color(0, 0, 0.05), new Color(0, 0, 1), new Color(1, 1, 1), NULL, 32);
+    Material* m1 = new Material(new Color(0.05, 0, 0), new Color(1, 0, 0), new Color(1, 1, 1), new Color(0.5, 0.5, 0.5), 32);
+    Material* m2 = new Material(new Color(0, 0, 0.05), new Color(0, 0, 1), new Color(1, 1, 1), new Color(0.5, 0.5, 0.5), 32);
 
     world->addShape(new Sphere(new Point(7,0,2), 1.0, world, NULL, m1));
     world->addShape(new Sphere(new Point(0,0,8), 5.0, world, NULL, m2));
