@@ -24,6 +24,7 @@ class Point {
     Point() {}
     Point(float xIn, float yIn, float zIn);
     float x; float y; float z;
+    void print();
 };
 
 class Vector {
@@ -78,7 +79,8 @@ class Matrix {
     Matrix* transpose();
 	//Matrix* makeTransl(float tx, float ty, float tz);
 	void setMatrix(float nmat[4][4]);
-	float determinant();
+	//float determinant();
+    Matrix* scale(float num);
 };
 
 /* various functions used to generate transformations. */
@@ -88,6 +90,9 @@ Matrix* makeScale(float sx, float sy, float sz);
 /* matrix composition. */
 Matrix* compose(Matrix* a, Matrix* b);
 float determinant(Matrix* m);
+Vector* vectScale(Matrix* m1, Vector* v1);
+Point* pxm(Matrix* m1, Point* p1);
+Matrix* matSum(Matrix* m1, Matrix* m2);
 
 /* matrix multiplication on the right my a 
  * point -> new Point*/
