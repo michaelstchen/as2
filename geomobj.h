@@ -60,7 +60,12 @@ class Triangle : public Shape {
  public:
     Triangle(Point* p0, Point* p1, Point* p2,
              World* w, Matrix* t, Material* m);
+    Triangle(Point* p0, Point* p1, Point* p2,
+	     Vector* v0, Vector* v1, Vector* v2,
+             World* w, Matrix* t, Material* m);
     Point* pa; Point* pb; Point* pc;
+    Vector* na; Vector* nb; Vector* nc;
+    bool hasNormals;
     float intersect(Ray* r);
     Vector* getNormal(Point* p);
 };

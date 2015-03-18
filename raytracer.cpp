@@ -140,7 +140,7 @@ void Scene::render() {
             Vector* eye_dir = newVector(camera, pixelLoc);
             EyeRay* e = new EyeRay(camera, eye_dir);
 
-            view->setPixelColor(i, j, traceRay(e, 4));
+            view->setPixelColor(i, j, traceRay(e, 1));
 
             delete pixelLoc; delete eye_dir;
         }
