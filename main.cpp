@@ -18,7 +18,7 @@
 Point* camera;
 
 ImgPlane* view;
-int width = 500; int height = 500;
+int width = 1000; int height = 1000;
 
 World* world = new World();
 
@@ -103,44 +103,44 @@ int writeImage(char const* filename, int width, int height, ImgPlane* b) {
 
 /* Helper Function to Parse OBJ Files */
 void readOBJ(char* filename, World* w, Matrix* t, Material* m) {
-  if (filename == NULL) {
-    fprintf(stderr, "ERROR: No file specified for obj command\n");
-    return;
-  }
-
-  FILE* finput = fopen(filename, "r");
-  if (finput == NULL) {
-    fprintf(stderr, "ERROR: cannot open obj file '%s'\n", filename);
-    return;
-  }
-
-  char line[100];
-  char* pch;
-  vector<Point*> pt;
-  vector<Vector*> vec;
-  while(fgets(line, sizeof(line), finput)) {
-    if ((pch = strtok(line, " \t \n")) == NULL) continue;
-
-    vector<float> p;
-    char* params;
-
-    while ((params = strtok(NULL, "\t\n /")) != NULL) {
-      p.push_back(atof(params));
+    if (filename == NULL) {
+        fprintf(stderr, "ERROR: No file specified for obj command\n");
+        return;
     }
 
-    if (!strcmp(pch, "v")) {
-      pt.push_back(new Point(p[0],p[1],p[2]));
-    } else if (!strcmp(pch, "vn")) {
-      vec.push_back(new Vector(p[0],p[1],p[2]));
-    } else if (!strcmp(pch, "f") && p.size() == 3) {
-      world->addShape(new Triangle(pt[(int)p[0]-1],
-				   pt[(int)p[1]-1],
-				   pt[(int)p[2]-1], w, t, m));
-    } else if (!strcmp(pch, "f") && p.size() == 6) {
-      // For Texture Mapping
+    FILE* finput = fopen(filename, "r");
+    if (finput == NULL) {
+        fprintf(stderr, "ERROR: cannot open obj file '%s'\n", filename);
+        return;
     }
 
-  }
+    char line[100];
+    char* pch;
+    vector<Point*> pt;
+    vector<Vector*> vec;
+    while(fgets(line, sizeof(line), finput)) {
+        if ((pch = strtok(line, " \t \n")) == NULL) continue;
+
+        vector<float> p;
+        char* params;
+
+        while ((params = strtok(NULL, "\t\n /")) != NULL) {
+            p.push_back(atof(params));
+        }
+
+        if (!strcmp(pch, "v")) {
+            pt.push_back(new Point(p[0],p[1],p[2]));
+        } else if (!strcmp(pch, "vn")) {
+            vec.push_back(new Vector(p[0],p[1],p[2]));
+        } else if (!strcmp(pch, "f") && p.size() >= 3) {
+            world->addShape(new Triangle(pt[(int)p[0]-1],
+                                         pt[(int)p[1]-1],
+                                         pt[(int)p[2]-1], w, t, m));
+        } else if (!strcmp(pch, "f") && p.size() == 6) {
+            // For Texture Mapping
+        }
+
+    }
 
 }
 
@@ -205,8 +205,6 @@ int readFile(int argc, char* argv[]) {
 	  } else {
 	    arg_err = true;
 	  }
-        } else if (!strcmp(pch, "obj")) {
-
         } else if (!strcmp(pch, "ltp")) {
             if (p.size() == 6) {
                 world->addLight(new Point_Light(new Color(p[3],p[4],p[5]),
@@ -239,13 +237,35 @@ int readFile(int argc, char* argv[]) {
                 arg_err = true;
             }
         } else if (!strcmp(pch, "xft")) {
-
+            if (p.size() == 3) {
+                Matrix* transl = makeTransl(p[0], p[1], p[2]);
+                Matrix* oldT = t;
+                t = compose(oldT, transl);
+                delete transl; delete oldT;
+            } else {
+                arg_err = true;
+            }            
         } else if (!strcmp(pch, "xfr")) {
-
+            if (p.size() == 3) {
+                Matrix* rot = makeRot(p[0], p[1], p[2]);
+                Matrix* oldT = t;
+                t = compose(oldT, rot);
+                delete rot; delete oldT;
+            } else {
+                arg_err = true;
+            }
         } else if (!strcmp(pch, "xfs")) {
-
+            if (p.size() == 3) {
+                Matrix* scale = makeScale(p[0], p[1], p[2]);
+                Matrix* oldT = t;
+                t = compose(oldT, scale);
+                delete scale; delete oldT;
+            } else {
+                arg_err = true;
+            }
         } else if (!strcmp(pch, "xfz")) {
-
+            delete t;
+            t = new Matrix();
         } else {
             fprintf(stderr, "ERROR: unrecognized command '%s'\n", pch);
         }
@@ -259,9 +279,11 @@ int readFile(int argc, char* argv[]) {
 /* Program Starting Point */
 int main(int argc, char* argv[]) {
 
+    printf("Reading File\n");
     int read_ret = readFile(argc, argv);
     if (read_ret) return read_ret;
 
+    printf("Rendering Scene\n");
     scene = new Scene(world, view, camera);
     scene->render();
 

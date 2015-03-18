@@ -80,9 +80,9 @@ class Matrix {
     Matrix* invert();
     /* returns the transpose of this matrix. */
     Matrix* transpose();
-	//Matrix* makeTransl(float tx, float ty, float tz);
-	void setMatrix(float nmat[4][4]);
-	//float determinant();
+    //Matrix* makeTransl(float tx, float ty, float tz);
+    void setMatrix(float nmat[4][4]);
+    //float determinant();
     Matrix* scale(float num);
 };
 
@@ -93,8 +93,8 @@ Matrix* makeScale(float sx, float sy, float sz);
 /* matrix composition. */
 Matrix* compose(Matrix* a, Matrix* b);
 float determinant(Matrix* m);
-Vector* vectScale(Matrix* m1, Vector* v1);
-Point* pxm(Matrix* m1, Point* p1);
+Vector* mLeftV(Matrix* m1, Vector* v1);
+Point* mLeftP(Matrix* m1, Point* p1);
 Matrix* matSum(Matrix* m1, Matrix* m2);
 
 /* matrix multiplication on the right my a 

@@ -136,7 +136,9 @@ Matrix* compose(Matrix* m1, Matrix* m2){
 		{
 			//cmatrix->setVal(i, j, 0);
 			for (int k = 0; k < 4; k++){
-				cmatrix->setVal(i + 1, j + 1, cmatrix->getVal(i + 1, j + 1) + m1->getVal(i + 1, k + 1)*m2->getVal(k + 1, j + 1));
+				cmatrix->setVal(i + 1, j + 1, 
+                                                cmatrix->getVal(i + 1, j + 1)
+                                                + m1->getVal(i + 1, k + 1)*m2->getVal(k + 1, j + 1));
 			}
 		}
 	}
@@ -320,14 +322,17 @@ void Matrix::setMatrix(float nmat[4][4]){
 	}
 }
 
-Vector* vectScale(Matrix* m, Vector* v){
-	float s1 = m->getVal(1, 1) * v->x + m->getVal(1,2)*v->y + m->getVal(1,3)*v->z + m->getVal(1,4);
-	float s2 = m->getVal(2, 1) * v->x + m->getVal(2,2)*v->y + m->getVal(2,3)*v->z + m->getVal(2,4);
-	float s3 = m->getVal(3, 1) * v->x + m->getVal(3,2)*v->y + m->getVal(3,3)*v->z + m->getVal(3,4);
+Vector* mLeftV(Matrix* m, Vector* v){
+	float s1 = m->getVal(1, 1) * v->x + m->getVal(1,2)*v->y
+            + m->getVal(1,3)*v->z + m->getVal(1,4);
+	float s2 = m->getVal(2, 1) * v->x + m->getVal(2,2)*v->y
+            + m->getVal(2,3)*v->z + m->getVal(2,4);
+	float s3 = m->getVal(3, 1) * v->x + m->getVal(3,2)*v->y
+            + m->getVal(3,3)*v->z + m->getVal(3,4);
 	return new Vector(s1, s2, s3);
 }
 
-Point* pxm(Matrix* m, Point* v){
+Point* mLeftP(Matrix* m, Point* v){
 	float s1 = m->getVal(1, 1) * v->x + m->getVal(1,2)*v->y + m->getVal(1,3)*v->z + m->getVal(1,4);
 	float s2 = m->getVal(2, 1) * v->x + m->getVal(2,2)*v->y + m->getVal(2,3)*v->z + m->getVal(2,4);
 	float s3 = m->getVal(3, 1) * v->x + m->getVal(3,2)*v->y + m->getVal(3,3)*v->z + m->getVal(3,4);
@@ -379,18 +384,15 @@ Matrix* makeRot(float rx, float ry, float rz){
             {0,0,0,1}
         };
     rx2->setMatrix(rxa);
-    norm = (norm/180)*3.14159265359;
+    norm = (norm/180)*3.1415927;
     rotMatrix = matSum(rr, rx2->scale(sin(norm)));
     Matrix* rxrx = new Matrix();
     rxrx = compose(rx2, rx2);
-/*    printf("\nTHIS IS THE LEFT UPPER VALUE OF RXRX BEFORE SCALING: %f\n", rxrx->getVal(1,1));
-    printf("\nTHIS IS -COS(NORM): %f\n", -cos(norm));*/
     rxrx = rxrx->scale(-cos(norm));
-/*    printf("\nTHIS IS THE 3,3 VALUE OF RXRX: %f\n", rxrx->getVal(3,3));
-    printf("\nTHIS IS THE LEFT UPPER VALUE OF RX2: %f\n", rx2->getVal(1,1));
-    printf("\nTHIS IS THE LEFT UPPER VALUE OF RXRX: %f", rxrx->getVal(1,1));
-    printf("\nTHIS IS THE BOTTOM RIGHT VALUE OF RXRX: %f", rxrx->getVal(4,4));*/
+
     rotMatrix = matSum(rotMatrix, rxrx);
+
+    delete r; delete rr; delete rxrx;
     return rotMatrix;
 }
 

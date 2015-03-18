@@ -13,6 +13,8 @@ using namespace std;
 Shape::Shape(World* w, Matrix* t, Material* m) {
     world = w;
     transform = t;
+    t_inverse = t->invert();
+    normT = t_inverse->transpose();
     material = m;
 }
 

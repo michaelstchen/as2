@@ -42,7 +42,7 @@ TEST(VectorTest, VectorCross) {
     Vector* v2 = new Vector(0.0, 5.0, 6.0);
     Vector* d = cross(v1, v2);
     ASSERT_FLOAT_EQ(-3.0, d->x);
-    ASSERT_FLOAT_EQ(6.0, d->y);
+    ASSERT_FLOAT_EQ(-6.0, d->y);
     ASSERT_FLOAT_EQ(5.0, d->z);
     delete v1; delete v2; delete d;    
 }
@@ -280,10 +280,10 @@ TEST(MatrixTest, inverse){
 
 TEST(MatrixTest, rotMatrix){
     Matrix* rotMatrix = makeRot(0,0,90);
-    rotMatrix->print();
+    //rotMatrix->print();
     Point* p = new Point(pow(2,0.5)/2, pow(2,0.5)/2 , 0);
     p = pxm(rotMatrix,p);
-    p->print();
+    //p->print();
 }
 
 int main(int argc, char **argv) {

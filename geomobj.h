@@ -30,6 +30,8 @@ class Shape {
     Matrix* transform;
     /* transformation for my normal vectors. */
     Matrix* normT;
+    /* the inverse of my transformation matrix */
+    Matrix* t_inverse;
     /* my material properties (i.e. color) */
     Material* material;
 
