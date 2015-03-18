@@ -227,10 +227,6 @@ TEST(MatrixTest, transpose){
 
     Matrix* m3 = m1->transpose();
 
-    //m1->print();
-
-    //m3->print();
-
     float f1 = m2->getVal(2,1);
     float f2 = m3->getVal(2,1);
     ASSERT_FLOAT_EQ(f1, f2);
@@ -261,38 +257,26 @@ TEST(MatrixTest, inverse1){
 TEST(MatrixTest, inverse2){
     Matrix * m1 = new Matrix();
     m1 = m1->invert();
-    m1->print();
+    //m1->print();
 }
 
-/*TEST(MatrixTest, compose){
-    Matrix * m1 = new Matrix();
-    float nm1[4][4] = {
-        {1,2,3,4},
-        {5,6,7,8},
-        {9,10,11,12},
-        {13,14,15,16}
-    };
-    m1->setMatrix(nm1);
+TEST(MatrixTest, translation) {
+    Matrix* mt = makeTransl(2.1, 3, 4);
 
-    Matrix * m2 = new Matrix();
-    float nm2[4][4] = {
-        {16,15,14,13},
-        {12,11,10,9},
-        {8,7,6,5},
-        {4,3,2,1}
-    };
-    m2->setMatrix(nm2);
+    ASSERT_FLOAT_EQ(2.1, mt->getVal(1, 4));
+    ASSERT_FLOAT_EQ(3, mt->getVal(2, 4));
+    ASSERT_FLOAT_EQ(4, mt->getVal(3, 4));
 
-    Matrix* m3 = compose(m1, m2);
-    m3->print();
-}*/
+    Vector* v = new Vector(2.5, 3, -5);
+    Vector* vt = mLeftV(mt, v);
 
-TEST(MatrixTest, rotMatrix){
-    Matrix* rotMatrix = makeRot(0,0,90);
-    //rotMatrix->print();
-    Point* p = new Point(pow(2,0.5)/2, pow(2,0.5)/2 , 0);
-    p = mLeftP(rotMatrix,p);
-    //p->print();
+    ASSERT_FLOAT_EQ(4.6, vt->x); 
+    ASSERT_FLOAT_EQ(6, vt->y); 
+    ASSERT_FLOAT_EQ(-1, vt->z); 
+}
+
+TEST(MatrixTest, scale) {
+    
 }
 
 int main(int argc, char **argv) {

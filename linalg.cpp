@@ -342,11 +342,10 @@ Point* mLeftP(Matrix* m, Point* v){
 //REALLY REALLY NEEDS TESTING
 Matrix* makeTransl(float tx, float ty, float tz){
 	Matrix* transMatrix = new Matrix();
-	transMatrix->setVal(3, 0, tx);
-	transMatrix->setVal(3, 1, ty);
-	transMatrix->setVal(3, 2, tz);
+	transMatrix->setVal(1, 4, tx);
+	transMatrix->setVal(2, 4, ty);
+	transMatrix->setVal(3, 4, tz);
 
-	//transMatrix->setMatrix(nmat);
 	return transMatrix;
 }
 
