@@ -93,43 +93,53 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
 
 Color* Scene::traceRay(Ray* e, int depth) {
     Color* c = new Color(0,0,0);
-    Shape* s;
+    Shape* s; EyeRay* e_obj;
     float t = -1.0;
-
     if (depth <= 0) return c;
 
     vector<Shape*>::iterator shape_it = world->shapeIter();
     for (shape_it; shape_it != world->shapeIterEnd(); ++shape_it) {
-        float currT = (**shape_it).intersect(e);
+        Matrix* inv = (**shape_it).t_inverse;
+        EyeRay* e_obj_t = new EyeRay(mLeftP(inv, e->p0),
+                                     mLeftV(inv, e->dir));
+        float currT = (**shape_it).intersect(e_obj_t);
         if (currT < (unsigned) t && currT > 0) {
             t = currT;
             s = (*shape_it);
+            e_obj = e_obj_t;
         }
     }
-    
-    Point* inter = e->findPoint(t);
 
-    if (inter != NULL) {
-        Vector* n = s->getNormal(inter);
-        n->normalize(); (e->dir)->normalize();
+    Point* i_obj = e_obj->findPoint(t);
 
-        Color* brdf = s->calcBRDF(e->dir, n, inter);
+    if (i_obj != NULL) {
+        Vector* n_obj = s->getNormal(i_obj);
+        Vector* n_world = mLeftV(s->normT, n_obj);
+        delete n_obj;
+
+        Point* i_world = mLeftP(s->transform, i_obj);
+
+        n_world->normalize(); (e->dir)->normalize();
+
+        Color* brdf = s->calcBRDF(e->dir, n_world, i_world);
         c->add(brdf);
         delete brdf;
 
-        Vector* r_temp = mult(n, 2.0 * dot(e->dir, n));
-        Vector* r = sub(e->dir, r_temp);
-        delete r_temp;
+        Vector* temp = mult(n_world, 2.0 * dot(e->dir, n_world));
+        Vector* r = sub(e->dir, temp);
+        delete temp;
 
-        ReflectRay* rray = new ReflectRay(inter, r);
-        Color* refl = traceRay(rray, --depth);
-        refl->mult(s->material->kr);
-        c->add(refl);
-        delete n; delete r; delete refl;
+        ReflectRay* rray = new ReflectRay(i_world, r);
+        Color* rcolor = traceRay(rray, --depth);
+        rcolor->mult(s->material->kr);
+        c->add(rcolor);
+
+        delete n_world; delete i_world;
+        delete r; delete rcolor;
 
     }
 
-    delete inter;
+    delete i_obj;
     return c;
     
 }

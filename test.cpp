@@ -88,9 +88,10 @@ TEST(ColorTest, Color8Bit) {
 /* Shape Intersection Tests */
 
 TEST(IntersectionTest, SphereTest0) {
+    Matrix* m = new Matrix();
     Point* c = new Point(0.0, 0.0, 0.0);
-    Sphere* s = new Sphere(c, 1, NULL, NULL, NULL);
-    
+    Sphere* s = new Sphere(c, 1, NULL, m, NULL);
+
     Point* p = new Point(2, 0, 0);
     Vector* d = new Vector(0, 1, 0);
     EyeRay* ray = new EyeRay(p, d);
@@ -105,8 +106,9 @@ TEST(IntersectionTest, SphereTest0) {
 
 
 TEST(IntersectionTest, SphereTest1) {
+    Matrix* m = new Matrix();
     Point* c = new Point(0.0, 0.0, 0.0);
-    Sphere* s = new Sphere(c, 1, NULL, NULL, NULL);
+    Sphere* s = new Sphere(c, 1, NULL, m, NULL);
     
     Point* p = new Point(2, 1, 0);
     Vector* d = new Vector(-1, 0, 0);
@@ -123,8 +125,9 @@ TEST(IntersectionTest, SphereTest1) {
 }
 
 TEST(IntersectionTest, SphereTest2) {
+    Matrix* m = new Matrix();
     Point* c = new Point(0.0, 0.0, 0.0);
-    Sphere* s = new Sphere(c, 1, NULL, NULL, NULL);
+    Sphere* s = new Sphere(c, 1, NULL, m, NULL);
     
     Point* p = new Point(2, 0, 0);
     Vector* d = new Vector(-1, 0, 0);
@@ -242,7 +245,7 @@ TEST(MatrixTest, transpose){
     ASSERT_FLOAT_EQ(f1, f2);
 }
 
-TEST(MatrixTest, inverse){
+TEST(MatrixTest, inverse1){
     Matrix * m1 = new Matrix();
     float nm1[4][4] = {
         {22,-35,67,122},
@@ -253,6 +256,12 @@ TEST(MatrixTest, inverse){
     m1->setMatrix(nm1);
     m1 = m1->invert();
     //m1->print();
+}
+
+TEST(MatrixTest, inverse2){
+    Matrix * m1 = new Matrix();
+    m1 = m1->invert();
+    m1->print();
 }
 
 /*TEST(MatrixTest, compose){
@@ -282,7 +291,7 @@ TEST(MatrixTest, rotMatrix){
     Matrix* rotMatrix = makeRot(0,0,90);
     //rotMatrix->print();
     Point* p = new Point(pow(2,0.5)/2, pow(2,0.5)/2 , 0);
-    p = pxm(rotMatrix,p);
+    p = mLeftP(rotMatrix,p);
     //p->print();
 }
 
