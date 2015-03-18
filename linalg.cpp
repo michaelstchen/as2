@@ -85,11 +85,128 @@ Vector* newVector(Point* p1, Point* p2) {
     return ret;
 }
 
+//-------------------------------------------------------------------------------------------------
+//NEEDS TESTING FOR ALL CODE UNDER HERE vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+float Matrix::getVal(int i, int j){
+	return mat[i][j];
+}
+
+void Matrix::setVal(int i, int j, float val){
+	mat[i][j] = val;
+}
+
+Matrix* compose(Matrix* m1, Matrix* m2){
+	Matrix* cmatrix = new Matrix();
+
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			cmatrix->setVal(i, j, 0);
+			for (int k = 0; k < 4; k++){
+				cmatrix->setVal(i, j, cmatrix->getVal(i, j) + m1->getVal(i, k)*m2->getVal(k, j));
+			}
+		}
+	}
+	return cmatrix;
+}
 
 Matrix* Matrix::invert() {
-    return NULL;
+	return NULL;
 }
 
 Matrix* Matrix::transpose() {
-    return NULL;
+	Matrix* tmatrix = new Matrix();
+	for (int i = 0; i < 4; i++){
+		for (int j = 0; j < 4; j++){
+			tmatrix->setVal(i, j, this->getVal(j, i));
+		}
+	}
+	return tmatrix;
+}
+
+void Matrix::setMatrix(float nmat[4][4]){
+	for (int i = 0; i < 4; i++){
+		for (int j = 0; j < 4; j++){
+			mat[i][j] = nmat[i][j];
+		}
+	}
+}
+
+//REALLY REALLY NEEDS TESTING
+//left-multiplies a transformation matrix created using tx, ty, and tz to "this"
+Matrix* makeTransl(float tx, float ty, float tz){
+	Matrix* transMatrix = new Matrix();
+	transMatrix->setVal(3, 0, tx);
+	transMatrix->setVal(3, 1, ty);
+	transMatrix->setVal(3, 2, tz);
+
+	//transMatrix->setMatrix(nmat);
+	return transMatrix;
+}
+
+Matrix* makeScale(float sx, float sy, float sz){
+	Matrix* scaleMatrix = new Matrix();
+
+	scaleMatrix->setVal(0, 0, sx);
+	scaleMatrix->setVal(1, 1, sy);
+	scaleMatrix->setVal(2, 2, sz);
+
+	//scaleMatrix->setMatrix(nmat);
+	return scaleMatrix;
+}
+
+Matrix* makeRot(float rx, float ry, float rz){
+	Matrix* rotMatrix = new Matrix();
+	float norm = pow(pow(rx, 2) + pow(ry, 2) + pow(rz, 2), 0.5);
+	float r_31 = rx / norm;
+	float r_32 = ry / norm;
+	float r_33 = rz / norm;
+	return rotMatrix;
+}
+
+
+float determinant(Matrix* m){
+	float f1 = m->getVal(1, 1) * m->getVal(2, 2) * m->getVal(3, 3) * m->getVal(4, 4);
+	float f2 = m->getVal(1, 1) + m->getVal(2, 3) + m->getVal(3, 4) + m->getVal(4, 2);
+	float f3 = m->getVal(1, 1) + m->getVal(2, 4) + m->getVal(3, 2) + m->getVal(4, 3);
+	float r1 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 2) + m->getVal(2, 1) + m->getVal(3, 4) + m->getVal(4, 3);
+	f2 = m->getVal(1, 2) + m->getVal(2, 3) + m->getVal(3, 1) + m->getVal(4, 4);
+	f3 = m->getVal(1, 2) * m->getVal(2, 4) * m->getVal(3, 3) * m->getVal(4, 1);
+	float r2 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 3) + m->getVal(2, 1) + m->getVal(3, 2) + m->getVal(4, 4);
+	f2 = m->getVal(1, 3) + m->getVal(2, 2) + m->getVal(3, 4) + m->getVal(4, 1);
+	f3 = m->getVal(1, 3) * m->getVal(2, 4) * m->getVal(3, 1) * m->getVal(4, 2);
+	float r3 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 4) + m->getVal(2, 1) + m->getVal(3, 3) + m->getVal(4, 2);
+	f2 = m->getVal(1, 4) + m->getVal(2, 2) + m->getVal(3, 1) + m->getVal(4, 3);
+	f3 = m->getVal(1, 4) * m->getVal(2, 3) * m->getVal(3, 2) * m->getVal(4, 1);
+	float r4 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 1) + m->getVal(2, 2) + m->getVal(3, 4) + m->getVal(4, 3);
+	f2 = m->getVal(1, 1) + m->getVal(2, 3) + m->getVal(3, 2) + m->getVal(4, 4);
+	f3 = m->getVal(1, 1) * m->getVal(2, 4) * m->getVal(3, 3) * m->getVal(4, 2);
+	float r5 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 2) + m->getVal(2, 1) + m->getVal(3, 3) + m->getVal(4, 4);
+	f2 = m->getVal(1, 2) + m->getVal(2, 3) + m->getVal(3, 4) + m->getVal(4, 1);
+	f3 = m->getVal(1, 2) * m->getVal(2, 4) * m->getVal(3, 1) * m->getVal(4, 3);
+	float r6 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 3) + m->getVal(2, 1) + m->getVal(3, 4) + m->getVal(4, 2);
+	f2 = m->getVal(1, 3) + m->getVal(2, 2) + m->getVal(3, 1) + m->getVal(4, 4);
+	f3 = m->getVal(1, 3) * m->getVal(2, 4) * m->getVal(3, 2) * m->getVal(4, 1);
+	float r7 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 4) + m->getVal(2, 1) + m->getVal(3, 2) + m->getVal(4, 3);
+	f2 = m->getVal(1, 4) + m->getVal(2, 2) + m->getVal(3, 3) + m->getVal(4, 1);
+	f3 = m->getVal(1, 4) * m->getVal(2, 3) * m->getVal(3, 1) * m->getVal(4, 2);
+	float r8 = f1 + f2 + f3;
+
+	return r1 + r2 + r3 + r4 - r5 - r6 - r7 - r8;
 }

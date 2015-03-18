@@ -76,6 +76,9 @@ class Matrix {
     Matrix* invert();
     /* returns the transpose of this matrix. */
     Matrix* transpose();
+	//Matrix* makeTransl(float tx, float ty, float tz);
+	void setMatrix(float nmat[4][4]);
+	float determinant();
 };
 
 /* various functions used to generate transformations. */
@@ -84,6 +87,7 @@ Matrix* makeRot(float rx, float ry, float rz);
 Matrix* makeScale(float sx, float sy, float sz);
 /* matrix composition. */
 Matrix* compose(Matrix* a, Matrix* b);
+float determinant(Matrix* m);
 
 /* matrix multiplication on the right my a 
  * point -> new Point*/
