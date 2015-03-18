@@ -191,6 +191,7 @@ TEST(MatrixTest, determinant){
     m1->setMatrix(nm1);
     float det = determinant(m1);
     ASSERT_FLOAT_EQ(det, 456);
+    delete m1;
 }
 
 TEST(MatrixTest, getVal){
@@ -204,6 +205,7 @@ TEST(MatrixTest, getVal){
     m1->setMatrix(nm1);
     float f1 = m1->getVal(2,1);
     ASSERT_FLOAT_EQ(f1, 2);
+    delete m1;
 }
 
 TEST(MatrixTest, transpose){
@@ -239,25 +241,7 @@ TEST(MatrixTest, transpose){
     f1 = m2->getVal(4,1);
     f2 = m3->getVal(4,1);
     ASSERT_FLOAT_EQ(f1, f2);
-}
-
-TEST(MatrixTest, inverse1){
-    Matrix * m1 = new Matrix();
-    float nm1[4][4] = {
-        {22,-35,67,122},
-        {58,-32,-11,66},
-        {12,13,14,17},
-        {-111,-213,57,81}
-    };
-    m1->setMatrix(nm1);
-    m1 = m1->invert();
-    //m1->print();
-}
-
-TEST(MatrixTest, inverse2){
-    Matrix * m1 = new Matrix();
-    m1 = m1->invert();
-    //m1->print();
+    delete m1; delete m2; delete m3;
 }
 
 TEST(MatrixTest, translation) {
@@ -273,10 +257,30 @@ TEST(MatrixTest, translation) {
     ASSERT_FLOAT_EQ(4.6, vt->x); 
     ASSERT_FLOAT_EQ(6, vt->y); 
     ASSERT_FLOAT_EQ(-1, vt->z); 
+
+    Point* p = new Point(2.5, 3, -5);
+    Point* pt = mLeftP(mt, p);
+
+    ASSERT_FLOAT_EQ(4.6, pt->x); 
+    ASSERT_FLOAT_EQ(6, pt->y); 
+    ASSERT_FLOAT_EQ(-1, pt->z); 
+
+    delete mt; delete v; delete vt;
 }
 
 TEST(MatrixTest, scale) {
-    
+    Matrix* mt = makeScale(2.1, 3.2, -1.5);
+
+    ASSERT_FLOAT_EQ(2.1, mt->getVal(1,1));
+    ASSERT_FLOAT_EQ(3.2, mt->getVal(2,2));
+    ASSERT_FLOAT_EQ(-1.5, mt->getVal(3,3));
+
+    Vector* v = new Vector(2.5, 3, -5);
+    Vector* vt = mLeftV(mt, v);
+
+    ASSERT_FLOAT_EQ(5.25, vt->x);
+    ASSERT_FLOAT_EQ(9.6, vt->y);
+    ASSERT_FLOAT_EQ(7.5, vt->z);
 }
 
 int main(int argc, char **argv) {

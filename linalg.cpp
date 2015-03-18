@@ -352,9 +352,9 @@ Matrix* makeTransl(float tx, float ty, float tz){
 Matrix* makeScale(float sx, float sy, float sz){
 	Matrix* scaleMatrix = new Matrix();
 
-	scaleMatrix->setVal(0, 0, sx);
-	scaleMatrix->setVal(1, 1, sy);
-	scaleMatrix->setVal(2, 2, sz);
+	scaleMatrix->setVal(1, 1, sx);
+	scaleMatrix->setVal(2, 2, sy);
+	scaleMatrix->setVal(3, 3, sz);
 
 	//scaleMatrix->setMatrix(nmat);
 	return scaleMatrix;
