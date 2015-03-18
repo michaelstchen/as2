@@ -201,7 +201,8 @@ int readFile(int argc, char* argv[]) {
 	  if (p.size() == 9) {
 	    world->addShape(new Triangle(new Point(p[0],p[1],p[2]),
 					 new Point(p[3],p[4],p[5]),
-					 new Point(p[6],p[7],p[8]), world, t, mat));
+					 new Point(p[6],p[7],p[8]),
+                                         world, t, mat));
 	  } else {
 	    arg_err = true;
 	  }
@@ -232,7 +233,10 @@ int readFile(int argc, char* argv[]) {
             }
         } else if (!strcmp(pch, "mat")) {
             if (p.size() == 13) {
-                mat = new Material(new Color(p[0],p[1],p[2]), new Color(p[3],p[4],p[5]), new Color(p[6],p[7],p[8]), new Color(p[10],p[11],p[12]), p[9]);
+                mat = new Material(new Color(p[0],p[1],p[2]),
+                                   new Color(p[3],p[4],p[5]),
+                                   new Color(p[6],p[7],p[8]),
+                                   new Color(p[10],p[11],p[12]), p[9]);
             } else {
                 arg_err = true;
             }

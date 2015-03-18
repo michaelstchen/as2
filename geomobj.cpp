@@ -96,7 +96,8 @@ bool Shape::inShadow(Point* p, Light* l) {
     return false;
 }
 
-Sphere::Sphere(Point* c, float r, World* w, Matrix* t, Material* m) : Shape(w, t, m) {
+Sphere::Sphere(Point* c, float r, World* w, Matrix* t, Material* m)
+  : Shape(w, t, m) {
     center = c;
     radius = r;
 }
