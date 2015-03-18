@@ -101,6 +101,47 @@ int writeImage(char const* filename, int width, int height, ImgPlane* b) {
 	return code;
 }
 
+/* Helper Function to Parse OBJ Files */
+void readOBJ(char* filename, World* w, Matrix* t, Material* m) {
+  if (filename == NULL) {
+    fprintf(stderr, "ERROR: No file specified for obj command\n");
+    return;
+  }
+
+  FILE* finput = fopen(filename, "r");
+  if (finput == NULL) {
+    fprintf(stderr, "ERROR: cannot open obj file '%s'\n", filename);
+    return;
+  }
+
+  char line[100];
+  char* pch;
+  vector<Point*> pt;
+  vector<Vector*> vec;
+  while(fgets(line, sizeof(line), finput)) {
+    if ((pch = strtok(line, " \t \n")) == NULL) continue;
+
+    vector<float> p;
+    char* params;
+
+    while ((params = strtok(NULL, "\t\n /")) != NULL) {
+      p.push_back(atof(params));
+    }
+
+    if (!strcmp(pch, "v")) {
+      pt.push_back(new Point(p[0],p[1],p[2]));
+    } else if (!strcmp(pch, "vn")) {
+      vec.push_back(new Vector(p[0],p[1],p[2]));
+    } else if (!strcmp(pch, "f")) {
+      if (p.size() == 3) {
+	world->addShape(new Triangle(pt[(int)p[0]-1],
+				     pt[(int)p[1]-1],
+				     pt[(int)p[2]-1], w, t, m));
+      }
+    }
+  }
+}
+
 /* Helper Function to Parse Instructions From File */
 int readFile(int argc, char* argv[]) {
     if (argc != 2) {
@@ -120,11 +161,18 @@ int readFile(int argc, char* argv[]) {
     char line[110];
     char* pch;
     while(fgets(line, sizeof(line), finput)) {
-        if ((pch = strtok(line, " \t\n")) == NULL) break;
+        if ((pch = strtok(line, " \t \n")) == NULL) continue;
         vector<float> p;
         bool arg_err = false;
 
         char* params;
+
+	if (!strcmp(pch, "obj")) {
+	  params = strtok(NULL, "\t \n");
+	  readOBJ(params, world, t, mat);
+	  continue;
+	}
+
         while ((params = strtok(NULL, " \t\n")) != NULL) {
             p.push_back(atof(params));
         }
