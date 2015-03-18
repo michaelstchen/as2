@@ -41,9 +41,9 @@ class Shape {
     /* returns normal vector for point on shape.
      * assumes point is located on shape. */
     virtual Vector* getNormal(Point* p) {return NULL;}
-    /* calculates the BRDF value at a point on this shape 
-     * given the incident ray. */
-    Color* calcBRDF(Ray* ray, Point* p);
+    /* calculates the BRDF value at a point P on this shape given
+     * the incident vector V, and the normal N (assumend normalized. */
+    Color* calcBRDF(Vector* v, Vector* n, Point* p);
     /* returns true if the point P is in the shadow of an
      * object with respect to a light L */
     bool inShadow(Point* p, Light* l);

@@ -110,12 +110,13 @@ Color* Scene::traceRay(Ray* e, int depth) {
     Point* inter = e->findPoint(t);
 
     if (inter != NULL) {
-        Color* brdf = s->calcBRDF(e, inter);
+        Vector* n = s->getNormal(inter);
+        n->normalize(); (e->dir)->normalize();
+
+        Color* brdf = s->calcBRDF(e->dir, n, inter);
         c->add(brdf);
         delete brdf;
 
-        Vector* n = s->getNormal(inter);
-        n->normalize(); (e->dir)->normalize();
         Vector* r_temp = mult(n, 2.0 * dot(e->dir, n));
         Vector* r = sub(e->dir, r_temp);
         delete r_temp;
