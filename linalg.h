@@ -47,12 +47,14 @@ class Matrix {
     Matrix* transpose();
 	//Matrix* makeTransl(float tx, float ty, float tz);
 	void setMatrix(float nmat[4][4]);
+	float determinant();
 };
 
 Matrix* makeTransl(float tx, float ty, float tz);
 Matrix* makeRot(float rx, float ry, float rz);
 Matrix* makeScale(float sx, float sy, float sz);
 Matrix* compose(Matrix* a, Matrix* b);
+float determinant(Matrix* m);
 
 Point* matrixmult(Matrix* a, Point* b);
 Vector* matrixmult(Matrix* a, Vector* b);

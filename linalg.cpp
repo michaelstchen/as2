@@ -156,3 +156,57 @@ Matrix* makeScale(float sx, float sy, float sz){
 	//scaleMatrix->setMatrix(nmat);
 	return scaleMatrix;
 }
+
+Matrix* makeRot(float rx, float ry, float rz){
+	Matrix* rotMatrix = new Matrix();
+	float norm = pow(pow(rx, 2) + pow(ry, 2) + pow(rz, 2), 0.5);
+	float r_31 = rx / norm;
+	float r_32 = ry / norm;
+	float r_33 = rz / norm;
+	return rotMatrix;
+}
+
+
+float determinant(Matrix* m){
+	float f1 = m->getVal(1, 1) * m->getVal(2, 2) * m->getVal(3, 3) * m->getVal(4, 4);
+	float f2 = m->getVal(1, 1) + m->getVal(2, 3) + m->getVal(3, 4) + m->getVal(4, 2);
+	float f3 = m->getVal(1, 1) + m->getVal(2, 4) + m->getVal(3, 2) + m->getVal(4, 3);
+	float r1 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 2) + m->getVal(2, 1) + m->getVal(3, 4) + m->getVal(4, 3);
+	f2 = m->getVal(1, 2) + m->getVal(2, 3) + m->getVal(3, 1) + m->getVal(4, 4);
+	f3 = m->getVal(1, 2) * m->getVal(2, 4) * m->getVal(3, 3) * m->getVal(4, 1);
+	float r2 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 3) + m->getVal(2, 1) + m->getVal(3, 2) + m->getVal(4, 4);
+	f2 = m->getVal(1, 3) + m->getVal(2, 2) + m->getVal(3, 4) + m->getVal(4, 1);
+	f3 = m->getVal(1, 3) * m->getVal(2, 4) * m->getVal(3, 1) * m->getVal(4, 2);
+	float r3 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 4) + m->getVal(2, 1) + m->getVal(3, 3) + m->getVal(4, 2);
+	f2 = m->getVal(1, 4) + m->getVal(2, 2) + m->getVal(3, 1) + m->getVal(4, 3);
+	f3 = m->getVal(1, 4) * m->getVal(2, 3) * m->getVal(3, 2) * m->getVal(4, 1);
+	float r4 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 1) + m->getVal(2, 2) + m->getVal(3, 4) + m->getVal(4, 3);
+	f2 = m->getVal(1, 1) + m->getVal(2, 3) + m->getVal(3, 2) + m->getVal(4, 4);
+	f3 = m->getVal(1, 1) * m->getVal(2, 4) * m->getVal(3, 3) * m->getVal(4, 2);
+	float r5 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 2) + m->getVal(2, 1) + m->getVal(3, 3) + m->getVal(4, 4);
+	f2 = m->getVal(1, 2) + m->getVal(2, 3) + m->getVal(3, 4) + m->getVal(4, 1);
+	f3 = m->getVal(1, 2) * m->getVal(2, 4) * m->getVal(3, 1) * m->getVal(4, 3);
+	float r6 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 3) + m->getVal(2, 1) + m->getVal(3, 4) + m->getVal(4, 2);
+	f2 = m->getVal(1, 3) + m->getVal(2, 2) + m->getVal(3, 1) + m->getVal(4, 4);
+	f3 = m->getVal(1, 3) * m->getVal(2, 4) * m->getVal(3, 2) * m->getVal(4, 1);
+	float r7 = f1 + f2 + f3;
+
+	f1 = m->getVal(1, 4) + m->getVal(2, 1) + m->getVal(3, 2) + m->getVal(4, 3);
+	f2 = m->getVal(1, 4) + m->getVal(2, 2) + m->getVal(3, 3) + m->getVal(4, 1);
+	f3 = m->getVal(1, 4) * m->getVal(2, 3) * m->getVal(3, 1) * m->getVal(4, 2);
+	float r8 = f1 + f2 + f3;
+
+	return r1 + r2 + r3 + r4 - r5 - r6 - r7 - r8;
+}
