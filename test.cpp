@@ -6,6 +6,7 @@
 #include "geomobj.h"
 #include "raytracer.h"
 #include "ray.h"
+#include <cmath>
 
 /* Vector test suite */
 
@@ -174,6 +175,115 @@ TEST(ImgPlaneTest, getPixelPos) {
     delete ul; delete ll; delete ur; delete lr;
     delete img;
 
+}
+
+TEST(MatrixTest, determinant){
+    Matrix* m1 = new Matrix();
+    float nm1[4][4] = {
+        {1,2,3,4},
+        {2,14,7,8},
+        {9,10,11,12},
+        {13,14,15,13}
+    };
+    m1->setMatrix(nm1);
+    float det = determinant(m1);
+    ASSERT_FLOAT_EQ(det, 456);
+}
+
+TEST(MatrixTest, getVal){
+    Matrix* m1 = new Matrix();
+    float nm1[4][4] = {
+        {1,2,3,4},
+        {2,14,7,8},
+        {9,10,11,12},
+        {13,14,15,13}
+    };
+    m1->setMatrix(nm1);
+    float f1 = m1->getVal(2,1);
+    ASSERT_FLOAT_EQ(f1, 2);
+}
+
+TEST(MatrixTest, transpose){
+    Matrix* m1 = new Matrix();
+    float nm1[4][4] = {
+        {1,2,3,4},
+        {2,14,7,8},
+        {9,10,11,12},
+        {13,14,15,13}
+    };
+    m1->setMatrix(nm1);
+
+    Matrix* m2 = new Matrix();
+    float nm2[4][4] = {
+        {1,2,9,13},
+        {2,14,10,14},
+        {3,7,11,15},
+        {4,8,12,13}
+    };
+    m2->setMatrix(nm2);
+
+    Matrix* m3 = m1->transpose();
+
+    //m1->print();
+
+    //m3->print();
+
+    float f1 = m2->getVal(2,1);
+    float f2 = m3->getVal(2,1);
+    ASSERT_FLOAT_EQ(f1, f2);
+
+    f1 = m2->getVal(3,1);
+    f2 = m3->getVal(3,1);
+    ASSERT_FLOAT_EQ(f1, f2);
+
+
+    f1 = m2->getVal(4,1);
+    f2 = m3->getVal(4,1);
+    ASSERT_FLOAT_EQ(f1, f2);
+}
+
+TEST(MatrixTest, inverse){
+    Matrix * m1 = new Matrix();
+    float nm1[4][4] = {
+        {22,-35,67,122},
+        {58,-32,-11,66},
+        {12,13,14,17},
+        {-111,-213,57,81}
+    };
+    m1->setMatrix(nm1);
+    m1 = m1->invert();
+    //m1->print();
+}
+
+/*TEST(MatrixTest, compose){
+    Matrix * m1 = new Matrix();
+    float nm1[4][4] = {
+        {1,2,3,4},
+        {5,6,7,8},
+        {9,10,11,12},
+        {13,14,15,16}
+    };
+    m1->setMatrix(nm1);
+
+    Matrix * m2 = new Matrix();
+    float nm2[4][4] = {
+        {16,15,14,13},
+        {12,11,10,9},
+        {8,7,6,5},
+        {4,3,2,1}
+    };
+    m2->setMatrix(nm2);
+
+    Matrix* m3 = compose(m1, m2);
+    m3->print();
+}*/
+
+TEST(MatrixTest, rotMatrix){
+    Matrix* rotMatrix = makeRot(0,0,90);
+    rotMatrix->print();
+    Point* p = new Point(pow(2,0.5)/2, pow(2,0.5)/2 , 0);
+    p = pxm(rotMatrix,p);
+    p->print();
 }
 
 int main(int argc, char **argv) {
