@@ -106,8 +106,9 @@ Color* Scene::traceRay(Ray* e, int depth) {
             s = (*shape_it);
         }
     }
-
+    
     Point* inter = e->findPoint(t);
+
     if (inter != NULL) {
         Color* brdf = s->calcBRDF(e, inter);
         c->add(brdf);
@@ -139,7 +140,7 @@ void Scene::render() {
             Vector* eye_dir = newVector(camera, pixelLoc);
             EyeRay* e = new EyeRay(camera, eye_dir);
 
-            view->setPixelColor(i, j, traceRay(e, 3));
+            view->setPixelColor(i, j, traceRay(e, 4));
 
             delete pixelLoc; delete eye_dir;
         }

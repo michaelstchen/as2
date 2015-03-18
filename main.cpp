@@ -148,7 +148,13 @@ int readFile(int argc, char* argv[]) {
                 arg_err = true;
             }
         } else if (!strcmp(pch, "tri")) {
-
+	  if (p.size() == 9) {
+	    world->addShape(new Triangle(new Point(p[0],p[1],p[2]),
+					 new Point(p[3],p[4],p[5]),
+					 new Point(p[6],p[7],p[8]), world, t, mat));
+	  } else {
+	    arg_err = true;
+	  }
         } else if (!strcmp(pch, "obj")) {
 
         } else if (!strcmp(pch, "ltp")) {

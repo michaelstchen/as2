@@ -168,7 +168,7 @@ Vector* Triangle::getNormal(Point* p) {
     Vector* b_min_a = newVector(pa, pb);
     Vector* c_min_a = newVector(pa, pc);
 
-    Vector* ret = cross(b_min_a, c_min_a);
+    Vector* ret = cross(c_min_a, b_min_a);
     delete b_min_a; delete c_min_a;
 
     return ret;

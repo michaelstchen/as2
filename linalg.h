@@ -26,6 +26,11 @@ class Point {
     float x; float y; float z;
 };
 
+/* product of point and scalar -> a new point */
+Point* mult(Point* p, float scalar);
+/* sum of two points -> a new point */
+Point* add(Point* p1, Point* p2);
+
 class Vector {
  public:
     Vector() {}
@@ -35,24 +40,22 @@ class Vector {
     void normalize();
 };
 
+/* sum of point and vector -> a new point */
+Point* add(Point* p, Vector* v);
+/* returns a pointer to the vector p2 - p1 */
+Vector* newVector(Point* p1, Point* p2);
+
 /* the sum of two vectors -> a new vector*/
 Vector* add(Vector* v1, Vector* v2);
 /* the difference between vectors (v1-v2) -> a new vector*/
 Vector* sub(Vector* v1, Vector* v2);
-/* sum of point and vector -> a new point */
-Point* add(Point* p, Vector* v);
-/* sum of two points -> a new point */
-Point* add(Point* p1, Point* p2);
 /* product of vector and scalar -> new vector */
 Vector* mult(Vector* v, float scalar);
-/* product of point and scalar -> a new point */
-Point* mult(Point* p, float scalar);
 /* dot product of two vectors */
 float dot(Vector* v1, Vector* v2);
 /* returns a pointer to v1 x v2 */
 Vector* cross(Vector* v1, Vector* v2);
-/* returns a pointer to the vector p2 - p1 */
-Vector* newVector(Point* p1, Point* p2);
+
 
 class Matrix {
  protected:
