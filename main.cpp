@@ -18,7 +18,7 @@
 Point* camera;
 
 ImgPlane* view;
-int width = 1000; int height = 1000;
+int width = 500; int height = 500;
 
 World* world = new World();
 
@@ -135,7 +135,7 @@ void readOBJ(char* filename, World* w, Matrix* t, Material* m) {
         } else if (!strcmp(pch, "f") && p.size() >= 3) {
             world->addShape(new Triangle(pt[(int)p[0]-1],
                                          pt[(int)p[1]-1],
-                                         pt[(int)p[2]-1], w, t, m));
+                                         pt[(int)p[2]-1], w, t->copy(), m));
         } else if (!strcmp(pch, "f") && p.size() == 6) {
             // For Texture Mapping
         }

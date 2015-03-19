@@ -67,7 +67,7 @@ class Triangle : public Shape {
              World* w, Matrix* t, Material* m);
     Point* pa; Point* pb; Point* pc;
     Vector* na; Vector* nb; Vector* nc;
-    bool hasNormals;
+    Vector* const_norm;
     float intersect(Ray* r, Point** i_obj);
     Vector* getNormal(Point* p);
 };
