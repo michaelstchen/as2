@@ -89,19 +89,23 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
     world = w;
     view = v;
     camera = c;
+    depth = 4;
 }
 
-Color* Scene::traceRay(Ray* e, int depth) {
+Color* Scene::traceRay(Ray* e, int d) {
     Color* c = new Color(0,0,0);
-    Shape* s; EyeRay* e_obj;
+    Shape* s; 
+    Ray* e_obj;
+    
     float t = -1.0;
-    if (depth <= 0) return c;
+    if (d <= 0) return c;
 
     vector<Shape*>::iterator shape_it = world->shapeIter();
     for (shape_it; shape_it != world->shapeIterEnd(); ++shape_it) {
         Matrix* inv = (**shape_it).t_inverse;
-        EyeRay* e_obj_t = new EyeRay(mLeftP(inv, e->p0),
-                                     mLeftV(inv, e->dir));
+        Ray* e_obj_t = new Ray(mLeftP(inv, e->p0), mLeftV(inv, e->dir));
+        e_obj_t->t_min = e->t_min;
+        e_obj_t->t_max = e->t_max; 
         float currT = (**shape_it).intersect(e_obj_t);
         if (currT < (unsigned) t && currT > 0) {
             t = currT;
@@ -130,7 +134,7 @@ Color* Scene::traceRay(Ray* e, int depth) {
         delete temp;
 
         ReflectRay* rray = new ReflectRay(i_world, r);
-        Color* rcolor = traceRay(rray, --depth);
+        Color* rcolor = traceRay(rray, --d);
         rcolor->mult(s->material->kr);
         c->add(rcolor);
 
@@ -151,7 +155,7 @@ void Scene::render() {
             Vector* eye_dir = newVector(camera, pixelLoc);
             EyeRay* e = new EyeRay(camera, eye_dir);
 
-            view->setPixelColor(i, j, traceRay(e, 4));
+            view->setPixelColor(i, j, traceRay(e, depth));
 
             delete pixelLoc; delete eye_dir;
         }

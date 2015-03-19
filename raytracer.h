@@ -74,6 +74,8 @@ class Scene {
     World* world;
     ImgPlane* view;
     Point* camera;
+    int depth;
+
     Color* traceRay(Ray* e_world, int depth);
 
     /* renders our scene. stores pixel color data in the VIEW member obj 
