@@ -288,7 +288,7 @@ TEST(MatrixTest, rotation) {
 
     ASSERT_FLOAT_EQ(0.86602539, mt->getVal(1,1));
     ASSERT_FLOAT_EQ(0, mt->getVal(1,2));
-    ASSERT_FLOAT_EQ(-0.5, mt->getVal(1,3));
+    ASSERT_FLOAT_EQ(0.5, mt->getVal(1,3));
     ASSERT_FLOAT_EQ(0, mt->getVal(1,4));
 
     ASSERT_FLOAT_EQ(0, mt->getVal(2,1));
@@ -296,7 +296,7 @@ TEST(MatrixTest, rotation) {
     ASSERT_FLOAT_EQ(0, mt->getVal(2,3));
     ASSERT_FLOAT_EQ(0, mt->getVal(2,4));
 
-    ASSERT_FLOAT_EQ(0.5, mt->getVal(3,1));
+    ASSERT_FLOAT_EQ(-0.5, mt->getVal(3,1));
     ASSERT_FLOAT_EQ(0, mt->getVal(3,2));
     ASSERT_FLOAT_EQ(0.86602539, mt->getVal(3,3));
     ASSERT_FLOAT_EQ(0, mt->getVal(3,4));
@@ -305,6 +305,7 @@ TEST(MatrixTest, rotation) {
     ASSERT_FLOAT_EQ(0, mt->getVal(4,2));
     ASSERT_FLOAT_EQ(0, mt->getVal(4,3));
     ASSERT_FLOAT_EQ(1, mt->getVal(4,4));
+
 }
 
 int main(int argc, char **argv) {
