@@ -376,13 +376,16 @@ Matrix* makeScale(float sx, float sy, float sz){
 	return scaleMatrix;
 }
 
-Matrix* makeRot(float rx, float ry, float rz){
-	Matrix* rotMatrix = new Matrix();
-	float norm = pow(pow(rx, 2) + pow(ry, 2) + pow(rz, 2), 0.5);
-	Vector* r = new Vector(rx, ry, rz);
-	r->normalize();
-	Matrix* rr = new Matrix();
-	float rrt[4][4] = 
+Matrix* makeRot(float r_x, float r_y, float r_z) {
+    Matrix* rotMatrix;
+
+    float norm = pow(pow(r_x, 2) + pow(r_y, 2) + pow(r_z, 2), 0.5);
+    norm = (norm/180)*3.1415927;
+
+    Vector* r = new Vector(r_x, r_y, r_z);
+    r->normalize();
+    Matrix* rr = new Matrix();
+    float rrt[4][4] = 
         {
             {r->x*r->x , r->x*r->y , r->x*r->z , 0},
             {r->x*r->y , r->y*r->y , r->y*r->z , 0},
@@ -390,24 +393,24 @@ Matrix* makeRot(float rx, float ry, float rz){
             {0,0,0,1}
         };
     rr->setMatrix(rrt);
-    Matrix* rx2 = new Matrix();
+    Matrix* rx = new Matrix();
     float rxa[4][4] =
         {
-            {0,-r->z,-r->y,0},
+            {0,-r->z,r->y,0},
             {r->z,0,-r->x,0},
             {-r->y,r->x,0,0},
             {0,0,0,1}
         };
-    rx2->setMatrix(rxa);
-    norm = (norm/180)*3.1415927;
-    rotMatrix = matSum(rr, rx2->scale(sin(norm)));
-    Matrix* rxrx = new Matrix();
-    rxrx = compose(rx2, rx2);
+    rx->setMatrix(rxa);
+
+    rotMatrix = matSum(rr, rx->scale(sin(norm)));
+    Matrix* rxrx = compose(rx, rx);
     rxrx = rxrx->scale(-cos(norm));
 
     rotMatrix = matSum(rotMatrix, rxrx);
+    rotMatrix->setVal(4, 4, 1);
 
-    delete r; delete rr; delete rxrx;
+    delete r; delete rr; delete rxrx; delete rx;
     return rotMatrix;
 }
 
