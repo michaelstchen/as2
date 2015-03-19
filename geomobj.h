@@ -37,7 +37,7 @@ class Shape {
 
     /* calculates intersection with ray R returning the
      * the ray's t parameter. */
-    virtual float intersect(Ray* r) {return -1.0;}
+    virtual float intersect(Ray* r, Point** i_obj) {return -1.0;}
     /* returns normal vector for point on shape.
      * assumes point is located on shape. */
     virtual Vector* getNormal(Point* p) {return NULL;}
@@ -54,7 +54,7 @@ class Sphere : public Shape {
     Sphere(Point* c, float r, World* w, Matrix* t, Material* m);
     Point* center;
     float radius;
-    float intersect(Ray* r);
+    float intersect(Ray* r, Point** i_obj);
     Vector* getNormal(Point* p);
 };
 
@@ -68,7 +68,7 @@ class Triangle : public Shape {
     Point* pa; Point* pb; Point* pc;
     Vector* na; Vector* nb; Vector* nc;
     bool hasNormals;
-    float intersect(Ray* r);
+    float intersect(Ray* r, Point** i_obj);
     Vector* getNormal(Point* p);
 };
 

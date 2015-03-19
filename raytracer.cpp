@@ -94,27 +94,24 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
 
 Color* Scene::traceRay(Ray* e, int d) {
     Color* c = new Color(0,0,0);
-    Shape* s; 
-    Ray* e_obj;
+    Shape* s = NULL;
+    Point* i_obj = NULL;
     
     float t = -1.0;
     if (d <= 0) return c;
 
     vector<Shape*>::iterator shape_it = world->shapeIter();
     for (shape_it; shape_it != world->shapeIterEnd(); ++shape_it) {
-        Matrix* inv = (**shape_it).t_inverse;
-        Ray* e_obj_t = new Ray(mLeftP(inv, e->p0), mLeftV(inv, e->dir));
-        e_obj_t->t_min = e->t_min;
-        e_obj_t->t_max = e->t_max; 
-        float currT = (**shape_it).intersect(e_obj_t);
+        Point* i_obj_t = NULL;
+        float currT = (**shape_it).intersect(e, &i_obj_t);
         if (currT < (unsigned) t && currT > 0) {
             t = currT;
             s = (*shape_it);
-            e_obj = e_obj_t;
+            i_obj = i_obj_t;
+        } else {
+            if (i_obj_t != NULL) delete i_obj_t;
         }
     }
-
-    Point* i_obj = e_obj->findPoint(t);
 
     if (i_obj != NULL) {
         Vector* n_obj = s->getNormal(i_obj);

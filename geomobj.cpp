@@ -67,8 +67,8 @@ Color* Shape::calcBRDF(Vector* v, Vector* n, Point* p) {
 }
 
 bool Shape::inShadow(Point* p, Light* l) {
-    Vector* p_to_l;
-    ShadowRay* s;
+    Vector* p_to_l = NULL;
+    ShadowRay* s = NULL;
     
     if (l->isPointLight()) {
         p_to_l = newVector(p, l->pos);
@@ -82,12 +82,15 @@ bool Shape::inShadow(Point* p, Light* l) {
 
     vector<Shape*>::iterator it = world->shapeIter();
     for (it; it != world->shapeIterEnd(); ++it) {
-        float t = (*it)->intersect(s);
+        Point* i_obj_t;
+        float t = (*it)->intersect(s, &i_obj_t);
         
         if (t > s->t_min && t < s->t_max) {
+            if (p_to_l != NULL) delete p_to_l;
             return true;
         }
     }
+    if (p_to_l != NULL) delete p_to_l;
     return false;
 }
 
@@ -102,10 +105,14 @@ Sphere::Sphere(Point* c, float r, World* w, Matrix* t, Material* m)
  * where the ray is parameterized as p(t) = e + td
  * and (c = sphere's center) and (r = sphere's radius). 
  * This function returns -1.0 if there is no intersection. */
-float Sphere::intersect(Ray* r) {
-    float d_d = dot(r->dir, r->dir);
-    Vector* e_minus_c = newVector(center, r->p0);
-    float d_ec = dot(r->dir, e_minus_c);
+float Sphere::intersect(Ray* r, Point** i_obj) {
+    Ray* rt = new Ray(mLeftP(t_inverse, r->p0), mLeftV(t_inverse, r->dir));
+    rt->t_min = r->t_min;
+    rt->t_max = r->t_max;
+
+    float d_d = dot(rt->dir, rt->dir);
+    Vector* e_minus_c = newVector(center, rt->p0);
+    float d_ec = dot(rt->dir, e_minus_c);
     float ec_ec = dot(e_minus_c, e_minus_c);
 
     delete e_minus_c;
@@ -119,7 +126,10 @@ float Sphere::intersect(Ray* r) {
     float t0 = (-d_ec + sqrt(discriminant)) / d_d;
     float t1 = (-d_ec - sqrt(discriminant)) / d_d;
 
-    return fmin(t0, t1);
+    *i_obj = rt->findPoint(fmin(t0, t1));
+    
+    delete rt->p0; delete rt->dir;
+    return fmin(t0,t1);
     
 }
 
@@ -143,7 +153,7 @@ Triangle::Triangle(Point* p0, Point* p1, Point* p2,
   hasNormals = true;
 }
 
-float Triangle::intersect(Ray* r) {
+float Triangle::intersect(Ray* r, Point** i_obj) {
     Vector* a_min_b = newVector(pb, pa);
     Vector* a_min_c = newVector(pc, pa);
 
