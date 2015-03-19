@@ -84,6 +84,8 @@ class Matrix {
     void setMatrix(float nmat[4][4]);
     //float determinant();
     Matrix* scale(float num);
+    /* returns a separate object copy of this matrix */
+    Matrix* copy();
 };
 
 /* various functions used to generate transformations. */

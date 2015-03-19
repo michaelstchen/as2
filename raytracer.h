@@ -27,10 +27,9 @@
 using namespace std;
 
 class World {
- private:
+ public:
     vector<Light*> lights;
     vector<Shape*> shapes;
- public:
     World() {}
     void addLight(Light* l);
     int numOfLights();

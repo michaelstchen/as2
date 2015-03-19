@@ -105,11 +105,21 @@ void Matrix::setVal(int i, int j, float val){
 Matrix* Matrix::scale(float n){
 	Matrix* smatrix = new Matrix();
 	for (int i = 0; i < 4; i++){
-		for (int j = 0; j < 4; j++){
-			smatrix->setVal(i + 1, j + 1, this->getVal(i + 1, j + 1)*n);
-		}
+            for (int j = 0; j < 4; j++){
+                smatrix->setVal(i + 1, j + 1, this->getVal(i + 1, j + 1)*n);
+            }
 	}
 	return smatrix;
+}
+
+Matrix* Matrix::copy() {
+    Matrix* ret = new Matrix();
+    for (int i = 0; i < 4; i++){
+		for (int j = 0; j < 4; j++){
+                    ret->setVal(i + 1, j + 1, this->getVal(i + 1, j + 1));
+		}
+	}
+    return ret;
 }
 
 void Matrix::print(){

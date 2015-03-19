@@ -72,7 +72,7 @@ bool Shape::inShadow(Point* p, Light* l) {
     
     if (l->isPointLight()) {
         p_to_l = newVector(p, l->pos);
-        s = new ShadowRay(p, p_to_l, INFINITY);
+        s = new ShadowRay(p, p_to_l, 1.0);
     } else if (l->isDirectLight()) {
         p_to_l = mult(l->dir, -1.0);
         s = new ShadowRay(p, p_to_l, INFINITY);
@@ -83,6 +83,7 @@ bool Shape::inShadow(Point* p, Light* l) {
     vector<Shape*>::iterator it = world->shapeIter();
     for (it; it != world->shapeIterEnd(); ++it) {
         Point* i_obj_t;
+        if (this == (*it)) continue;
         float t = (*it)->intersect(s, &i_obj_t);
         
         if (t > s->t_min && t < s->t_max) {
@@ -154,26 +155,32 @@ Triangle::Triangle(Point* p0, Point* p1, Point* p2,
 }
 
 float Triangle::intersect(Ray* r, Point** i_obj) {
+    Ray* rt = new Ray(mLeftP(t_inverse, r->p0), mLeftV(t_inverse, r->dir));
+    rt->t_min = r->t_min;
+    rt->t_max = r->t_max;
+
     Vector* a_min_b = newVector(pb, pa);
     Vector* a_min_c = newVector(pc, pa);
 
     float a = a_min_b->x; float b = a_min_b->y; float c = a_min_b->z;
     float d = a_min_c->x; float e = a_min_c->y; float f = a_min_c->z;
-    float g = (r->dir)->x; float h = (r->dir)->y; float i = (r->dir)->z;
-    float j = pa->x - (r->p0)->x;
-    float k = pa->y - (r->p0)->y;
-    float l = pa->z - (r->p0)->z;
+    float g = (rt->dir)->x; float h = (rt->dir)->y; float i = (rt->dir)->z;
+    float j = pa->x - (rt->p0)->x;
+    float k = pa->y - (rt->p0)->y;
+    float l = pa->z - (rt->p0)->z;
     float M = a*(e*i - h*f) + b*(g*f - d*i) + c*(d*h - e*g);
     delete a_min_b; delete a_min_c;
 
     float t = -(f*(a*k - j*b) + e*(j*c - a*l) + d*(b*l - k*c)) / M;
-    if (t < r->t_min || t > r->t_max) return -1.0;
+    if (t < rt->t_min || t > rt->t_max) return -1.0;
 
     float gamma = (i*(a*k - j*b) + h*(j*c - a*l) + g*(b*l - k*c)) / M;
     if (gamma < 0 || gamma > 1) return -1.0;
 
     float beta = (j*(e*i - h*f) + k*(g*f - d*i) + l*(d*h - e*g)) / M;
     if (beta < 0 || beta > 1 - gamma) return -1.0;
+
+    *i_obj = rt->findPoint(t);
 
     return t;   
 }

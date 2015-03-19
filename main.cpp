@@ -193,7 +193,7 @@ int readFile(int argc, char* argv[]) {
         } else if (!strcmp(pch, "sph")) {
             if (p.size() == 4) {
                 world->addShape(new Sphere(new Point(p[0],p[1],p[2]), p[3],
-                                           world, t, mat));
+                                           world, t->copy(), mat));
             } else {
                 arg_err = true;
             }
@@ -202,7 +202,7 @@ int readFile(int argc, char* argv[]) {
 	    world->addShape(new Triangle(new Point(p[0],p[1],p[2]),
 					 new Point(p[3],p[4],p[5]),
 					 new Point(p[6],p[7],p[8]),
-                                         world, t, mat));
+                                         world, t->copy(), mat));
 	  } else {
 	    arg_err = true;
 	  }

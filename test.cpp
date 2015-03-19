@@ -96,8 +96,8 @@ TEST(IntersectionTest, SphereTest0) {
     Vector* d = new Vector(0, 1, 0);
     EyeRay* ray = new EyeRay(p, d);
 
-    float t = s->intersect(ray);
-    Point* i = ray->findPoint(t);
+    Point* i = NULL;
+    float t = s->intersect(ray, &i);
 
     ASSERT_EQ(NULL, i);
     
@@ -114,8 +114,8 @@ TEST(IntersectionTest, SphereTest1) {
     Vector* d = new Vector(-1, 0, 0);
     EyeRay* ray = new EyeRay(p, d);
 
-    float t = s->intersect(ray);
-    Point* i = ray->findPoint(t);
+    Point* i = NULL;
+    float t = s->intersect(ray, &i);
 
     ASSERT_FLOAT_EQ(0.0, i->x);
     ASSERT_FLOAT_EQ(1.0, i->y);
@@ -133,8 +133,8 @@ TEST(IntersectionTest, SphereTest2) {
     Vector* d = new Vector(-1, 0, 0);
     EyeRay* ray = new EyeRay(p, d);
 
-    float t = s->intersect(ray);
-    Point* i = ray->findPoint(t);
+    Point* i = NULL;
+    float t = s->intersect(ray, &i);
 
     ASSERT_FLOAT_EQ(1.0, i->x);
     ASSERT_FLOAT_EQ(0.0, i->y);
