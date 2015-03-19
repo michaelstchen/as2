@@ -254,9 +254,9 @@ TEST(MatrixTest, translation) {
     Vector* v = new Vector(2.5, 3, -5);
     Vector* vt = mLeftV(mt, v);
 
-    ASSERT_FLOAT_EQ(4.6, vt->x); 
-    ASSERT_FLOAT_EQ(6, vt->y); 
-    ASSERT_FLOAT_EQ(-1, vt->z); 
+    ASSERT_FLOAT_EQ(2.5, vt->x); 
+    ASSERT_FLOAT_EQ(3, vt->y); 
+    ASSERT_FLOAT_EQ(-5, vt->z); 
 
     Point* p = new Point(2.5, 3, -5);
     Point* pt = mLeftP(mt, p);

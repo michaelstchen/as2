@@ -21,7 +21,7 @@ Point* Ray::findPoint(float t) {
 }
 
 EyeRay::EyeRay(Point* p, Vector* d) : Ray(p, d) {
-    t_min = 1;
+    t_min = 0.00001;
     t_max = INFINITY;
 }
 

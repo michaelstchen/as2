@@ -103,7 +103,6 @@ Sphere::Sphere(Point* c, float r, World* w, Matrix* t, Material* m)
  * and (c = sphere's center) and (r = sphere's radius). 
  * This function returns -1.0 if there is no intersection. */
 float Sphere::intersect(Ray* r) {
-    (r->dir)->normalize();
     float d_d = dot(r->dir, r->dir);
     Vector* e_minus_c = newVector(center, r->p0);
     float d_ec = dot(r->dir, e_minus_c);
