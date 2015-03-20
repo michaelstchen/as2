@@ -18,7 +18,7 @@
 Point* camera;
 
 ImgPlane* view;
-int width = 500; int height = 500;
+int width = 1000; int height = 1000;
 
 World* world = new World();
 

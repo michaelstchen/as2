@@ -89,7 +89,7 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
     world = w;
     view = v;
     camera = c;
-    depth = 4;
+    depth = 10;
 }
 
 Color* Scene::traceRay(Ray* e, int d) {
@@ -104,7 +104,7 @@ Color* Scene::traceRay(Ray* e, int d) {
     for (shape_it; shape_it != world->shapeIterEnd(); ++shape_it) {
         Point* i_obj_t = NULL;
         float currT = (**shape_it).intersect(e, &i_obj_t);
-        if (currT < (unsigned) t && currT > 0) {
+        if ( currT >= e->t_min && currT <= e->t_max && ( t<0 || currT<t ) ) {
             t = currT;
             s = (*shape_it);
             i_obj = i_obj_t;
