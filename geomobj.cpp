@@ -213,36 +213,41 @@ float Triangle::intersect(Ray* r, Point** i_obj) {
 
 Vector* Triangle::getNormal(Point* p) {
     if (!hasVertexNorms) return mult(const_norm, 1.0);
+    Vector* n = mult(const_norm, -1);
+    float n_mag = sqrt(pow(n->x, 2) + pow(n->y, 2) + pow(n->z, 2));
 
-    Vector* v0 = newVector(pa, pb);
-    Vector* v1 = newVector(pa, pc);
-    Vector* v2 = newVector(pa, p);
-
-    float d00 = dot(v0, v0);
-    float d01 = dot(v0, v1);
-    float d11 = dot(v1, v1);
-    float d20 = dot(v2, v0);
-    float d21 = dot(v2, v1);
-    float denom = d00 * d11 - d01 *d01;
-
-    delete v0; delete v1; delete v2;
+    float alpha; float beta; float gamma;
+    getBary(p, &alpha, &beta, &gamma);
     
-    float alpha = (d11 * d20 - d01 * d21) / denom;
-    float beta = (d00 * d21 - d01 * d20) / denom;
-    float gamma = 1.0 - alpha - beta;
+    Vector* a_contrib = mult(na, alpha);
+    Vector* b_contrib = mult(nb, beta);
+    Vector* c_contrib = mult(nc, gamma);
 
-    Vector* na_contrib = mult(na, alpha);
-    Vector* nb_contrib = mult(nb, beta);
-    Vector* nc_contrib = mult(nc, gamma);
+    Vector* a_plus_b = add(a_contrib, b_contrib);
+    Vector* interpol_n = add(a_plus_b, c_contrib);
+    delete a_contrib; delete b_contrib; delete c_contrib; delete a_plus_b;
 
-    Vector* na_plus_nb = add(na_contrib, nb_contrib);
-    Vector* norm = add(na_plus_nb, nc_contrib);
+    return mult(interpol_n, -1);
+}
 
-    delete na_contrib; delete nb_contrib; delete nc_contrib;
-    delete na_plus_nb;
+void Triangle::getBary(Point* p, float* a, float* b, float* c) {
+    Vector* n = mult(const_norm, -1);
+    float n_mag = sqrt(pow(n->x, 2) + pow(n->y, 2) + pow(n->z, 2));
 
-    norm->normalize();
+    Vector* c_min_b = newVector(pb, pc);
+    Vector* p_min_b = newVector(pb, p);
+    Vector* n_a = cross(c_min_b, p_min_b);
+    //Vector* n_a = cross(p_min_b, c_min_b);
+    delete c_min_b; delete p_min_b;
 
-    return norm;
+    Vector* a_min_c = newVector(pc, pa);
+    Vector* p_min_c = newVector(pc, p);
+    Vector* n_b = cross(a_min_c, p_min_c);
+    //Vector* n_b = cross(p_min_c, a_min_c);
+    delete a_min_c; delete p_min_c;
 
+    *a = dot(n, n_a) / n_mag;
+    *b = dot(n, n_b) / n_mag;
+    *c = 1.0 - *a - *b;
+    delete n_a; delete n_b; delete n;
 }

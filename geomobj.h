@@ -71,6 +71,7 @@ class Triangle : public Shape {
     bool hasVertexNorms;
     float intersect(Ray* r, Point** i_obj);
     Vector* getNormal(Point* p);
+    void getBary(Point* p, float* a, float* b, float* c);
 };
 
 #endif
