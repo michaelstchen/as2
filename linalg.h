@@ -31,6 +31,8 @@ class Point {
 Point* mult(Point* p, float scalar);
 /* sum of two points -> a new point */
 Point* add(Point* p1, Point* p2);
+/* the distance between two points */
+float dist(Point* p0, Point* p1);
 
 class Vector {
  public:

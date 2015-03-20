@@ -39,6 +39,12 @@ Vector* sub(Vector* v1, Vector* v2) {
     return ret;
 }
 
+float dist(Point* p0, Point* p1) {
+    return sqrt(pow(p1->x - p0->x, 2)
+                + pow(p1->y - p0->y, 2)
+                + pow(p1->z - p0->z, 1));
+}
+
 Point* add(Point* p, Vector* v) {
     Point* ret = new Point();
     ret->x = p->x + v->x;

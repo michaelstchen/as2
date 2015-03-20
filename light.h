@@ -23,6 +23,7 @@ class Light {
     Point* pos;
     Vector* dir;
     Color* color;
+    int falloff;
     virtual bool isPointLight() {return false;}
     virtual bool isDirectLight() {return false;}
 };
@@ -30,7 +31,6 @@ class Light {
 class Point_Light : public Light {
  public:
     Point_Light(Color* c, Point* p, int f);
-    int falloff;
     bool isPointLight() {return true;}
     bool isDirectLight() {return false;}
 };
