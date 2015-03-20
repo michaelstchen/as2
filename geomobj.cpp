@@ -232,22 +232,20 @@ Vector* Triangle::getNormal(Point* p) {
 
 void Triangle::getBary(Point* p, float* a, float* b, float* c) {
     Vector* n = mult(const_norm, -1);
-    float n_mag = sqrt(pow(n->x, 2) + pow(n->y, 2) + pow(n->z, 2));
+    float n_mag_sq = pow(n->x, 2) + pow(n->y, 2) + pow(n->z, 2);
 
     Vector* c_min_b = newVector(pb, pc);
     Vector* p_min_b = newVector(pb, p);
     Vector* n_a = cross(c_min_b, p_min_b);
-    //Vector* n_a = cross(p_min_b, c_min_b);
     delete c_min_b; delete p_min_b;
 
     Vector* a_min_c = newVector(pc, pa);
     Vector* p_min_c = newVector(pc, p);
     Vector* n_b = cross(a_min_c, p_min_c);
-    //Vector* n_b = cross(p_min_c, a_min_c);
     delete a_min_c; delete p_min_c;
 
-    *a = dot(n, n_a) / n_mag;
-    *b = dot(n, n_b) / n_mag;
+    *a = dot(n, n_a) / n_mag_sq;
+    *b = dot(n, n_b) / n_mag_sq;
     *c = 1.0 - *a - *b;
     delete n_a; delete n_b; delete n;
 }

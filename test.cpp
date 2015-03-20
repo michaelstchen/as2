@@ -251,21 +251,21 @@ TEST(MatrixTest, translation) {
     ASSERT_FLOAT_EQ(3, mt->getVal(2, 4));
     ASSERT_FLOAT_EQ(4, mt->getVal(3, 4));
 
-    Vector* v = new Vector(2.5, 3, -5);
-    Vector* vt = mLeftV(mt, v);
+    Vector v = Vector(2.5, 3, -5);
+    Vector vt = mLeftV(mt, &v);
 
-    ASSERT_FLOAT_EQ(2.5, vt->x); 
-    ASSERT_FLOAT_EQ(3, vt->y); 
-    ASSERT_FLOAT_EQ(-5, vt->z); 
+    ASSERT_FLOAT_EQ(2.5, vt.x); 
+    ASSERT_FLOAT_EQ(3, vt.y); 
+    ASSERT_FLOAT_EQ(-5, vt.z); 
 
-    Point* p = new Point(2.5, 3, -5);
-    Point* pt = mLeftP(mt, p);
+    Point p = Point(2.5, 3, -5);
+    Point pt = mLeftP(mt, &p);
 
-    ASSERT_FLOAT_EQ(4.6, pt->x); 
-    ASSERT_FLOAT_EQ(6, pt->y); 
-    ASSERT_FLOAT_EQ(-1, pt->z); 
+    ASSERT_FLOAT_EQ(4.6, pt.x); 
+    ASSERT_FLOAT_EQ(6, pt.y); 
+    ASSERT_FLOAT_EQ(-1, pt.z); 
 
-    delete mt; delete v; delete vt;
+    delete mt;
 }
 
 TEST(MatrixTest, scale) {
@@ -275,12 +275,12 @@ TEST(MatrixTest, scale) {
     ASSERT_FLOAT_EQ(3.2, mt->getVal(2,2));
     ASSERT_FLOAT_EQ(-1.5, mt->getVal(3,3));
 
-    Vector* v = new Vector(2.5, 3, -5);
-    Vector* vt = mLeftV(mt, v);
+    Vector v = Vector(2.5, 3, -5);
+    Vector vt = mLeftV(mt, &v);
 
-    ASSERT_FLOAT_EQ(5.25, vt->x);
-    ASSERT_FLOAT_EQ(9.6, vt->y);
-    ASSERT_FLOAT_EQ(7.5, vt->z);
+    ASSERT_FLOAT_EQ(5.25, vt.x);
+    ASSERT_FLOAT_EQ(9.6, vt.y);
+    ASSERT_FLOAT_EQ(7.5, vt.z);
 }
 
 TEST(MatrixTest, rotation) {
@@ -309,7 +309,14 @@ TEST(MatrixTest, rotation) {
 }
 
 TEST(TriangleTest, getBary) {
-  Triangle* tri = new Triangle(new Point(0,1,0), new Point(-1,0,0), new Point(1,0,0));
+    Triangle tri = Triangle(new Point(0,1,0), new Point(-1,0,0), new Point(1,0,0), NULL, new Matrix(), NULL);
+
+    float alpha; float beta; float gamma;
+    tri.getBary(new Point(0, 1.0/3.0, 0), &alpha, &beta, &gamma);
+
+    ASSERT_FLOAT_EQ(1.0/3.0, alpha);
+    ASSERT_FLOAT_EQ(1.0/3.0, beta);
+    ASSERT_FLOAT_EQ(1.0/3.0, gamma);
 }
 
 int main(int argc, char **argv) {

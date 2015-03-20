@@ -131,13 +131,17 @@ Color* Scene::traceRay(Ray* e, int d) {
         Vector* r = sub(e->dir, temp);
         delete temp;
 
-        ReflectRay rray = ReflectRay(&i_world, r);
-        Color* rcolor = traceRay(&rray, --d);
-        rcolor->mult(s->material->kr);
-        c->add(rcolor);
+        Color* s_kr = s->material->kr;
+        if (s_kr->r || s_kr-> g || s_kr->b) {
+            ReflectRay rray = ReflectRay(&i_world, r);
+            Color* rcolor = traceRay(&rray, --d);
+            rcolor->mult(s_kr);
+            c->add(rcolor);
 
-        delete r; delete rcolor;
-
+            delete rcolor;
+        }
+        
+        delete r; 
     }
 
     delete i_obj;
