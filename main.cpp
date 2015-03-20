@@ -144,6 +144,13 @@ void readOBJ(char* filename, World* w, Matrix* t, Material* m) {
                                          vec[(int)p[3]-1],
                                          vec[(int)p[5]-1],
                                          w, t->copy(), m));
+        } else if (!strcmp(pch, "f") && p.size() == 4) {
+            world->addShape(new Triangle(pt[(int)p[0]-1],
+                                         pt[(int)p[1]-1],
+                                         pt[(int)p[3]-1], w, t->copy(), m));
+            world->addShape(new Triangle(pt[(int)p[1]-1],
+                                         pt[(int)p[2]-1],
+                                         pt[(int)p[3]-1], w, t->copy(), m));
         }
 
     }

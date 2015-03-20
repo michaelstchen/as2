@@ -1,0 +1,16 @@
+Author: Michael Stephen Chen (performed submission)
+Partner: Christopher Chen
+
+Platform: Linux
+
+Location: 
+
+Our raytracer makes use of the libPNG library to write the output image. The computers in 349 Soda have libPNG installed but some of the other lab computers don't. Please run this on a computer with libPNG installed.
+
+Also our writeImage() function in main.cpp borrows heavily from the example provided here: http://www.labbookpages.co.uk/software/imgProc/libPNG.html
+
+image-013.obj was taken from: http://inst.eecs.berkeley.edu/~cs184/fa09/resources.php
+
+image-012.obj was taken from: http://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
+
+All required features are implemented. No optional features have been implemented.
