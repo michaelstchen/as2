@@ -84,13 +84,15 @@ bool Shape::inShadow(Point* p, Light* l) {
 
     vector<Shape*>::iterator it = world->shapeIter();
     for (it; it != world->shapeIterEnd(); ++it) {
-        Point* i_obj_t;
+        Point* i_obj_t = NULL;
         float t = (*it)->intersect(&s, &i_obj_t);
         
         if (t > s.t_min && t < s.t_max) {
+            if (i_obj_t != NULL) delete i_obj_t;
             if (p_to_l != NULL) delete p_to_l;
             return true;
         }
+        if (i_obj_t != NULL) delete i_obj_t;
     }
     if (p_to_l != NULL) delete p_to_l;
     return false;

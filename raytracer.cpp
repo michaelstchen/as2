@@ -89,7 +89,7 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
     world = w;
     view = v;
     camera = c;
-    depth = 4;
+    depth = 1;
 }
 
 Color* Scene::traceRay(Ray* e, int d) {
