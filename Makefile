@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++11 -g -O3
+CFLAGS = -std=c++11 -g
 
 #Flags for libPNG
 PNGFLAGS = -lm -lpng
