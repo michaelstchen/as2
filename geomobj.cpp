@@ -153,6 +153,7 @@ Vector* Sphere::getNormal(Point* p) {
 Triangle::Triangle(Point* p0, Point* p1, Point* p2,
                    World* w, Matrix* t, Material* m) : Shape(w, t, m) {
     pa = p0; pb = p1; pc = p2;
+    hasVertexNorms = false;
 
     Vector* b_min_a = newVector(pa, pb);
     Vector* c_min_a = newVector(pa, pc);
@@ -167,7 +168,13 @@ Triangle::Triangle(Point* p0, Point* p1, Point* p2,
                    World* w, Matrix* t, Material* m) : Shape(w, t, m) {
     pa = p0; pb = p1; pc = p2;
     na = v0; nb = v1; nc = v2;
-    const_norm = NULL;
+    hasVertexNorms = true;
+
+    Vector* b_min_a = newVector(pa, pb);
+    Vector* c_min_a = newVector(pa, pc);
+
+    const_norm = cross(c_min_a, b_min_a);
+    delete b_min_a; delete c_min_a;
 
 }
 
@@ -205,7 +212,7 @@ float Triangle::intersect(Ray* r, Point** i_obj) {
 }
 
 Vector* Triangle::getNormal(Point* p) {
-    if (const_norm != NULL) return mult(const_norm, 1.0);
+    if (!hasVertexNorms) return mult(const_norm, 1.0);
 
     Vector* v0 = newVector(pa, pb);
     Vector* v1 = newVector(pa, pc);

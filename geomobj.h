@@ -68,6 +68,7 @@ class Triangle : public Shape {
     Point* pa; Point* pb; Point* pc;
     Vector* na; Vector* nb; Vector* nc;
     Vector* const_norm;
+    bool hasVertexNorms;
     float intersect(Ray* r, Point** i_obj);
     Vector* getNormal(Point* p);
 };
