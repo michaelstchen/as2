@@ -132,12 +132,18 @@ void readOBJ(char* filename, World* w, Matrix* t, Material* m) {
             pt.push_back(new Point(p[0],p[1],p[2]));
         } else if (!strcmp(pch, "vn")) {
             vec.push_back(new Vector(p[0],p[1],p[2]));
-        } else if (!strcmp(pch, "f") && p.size() >= 3) {
+        } else if (!strcmp(pch, "f") && p.size() == 3) {
             world->addShape(new Triangle(pt[(int)p[0]-1],
                                          pt[(int)p[1]-1],
                                          pt[(int)p[2]-1], w, t->copy(), m));
         } else if (!strcmp(pch, "f") && p.size() == 6) {
-            // For Texture Mapping
+            world->addShape(new Triangle(pt[(int)p[0]-1],
+                                         pt[(int)p[2]-1],
+                                         pt[(int)p[4]-1],
+                                         vec[(int)p[1]-1],
+                                         vec[(int)p[3]-1],
+                                         vec[(int)p[5]-1],
+                                         w, t->copy(), m));
         }
 
     }

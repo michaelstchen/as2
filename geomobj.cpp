@@ -167,6 +167,7 @@ Triangle::Triangle(Point* p0, Point* p1, Point* p2,
                    World* w, Matrix* t, Material* m) : Shape(w, t, m) {
     pa = p0; pb = p1; pc = p2;
     na = v0; nb = v1; nc = v2;
+    const_norm = NULL;
 
 }
 
@@ -205,5 +206,36 @@ float Triangle::intersect(Ray* r, Point** i_obj) {
 
 Vector* Triangle::getNormal(Point* p) {
     if (const_norm != NULL) return mult(const_norm, 1.0);
+
+    Vector* v0 = newVector(pa, pb);
+    Vector* v1 = newVector(pa, pc);
+    Vector* v2 = newVector(pa, p);
+
+    float d00 = dot(v0, v0);
+    float d01 = dot(v0, v1);
+    float d11 = dot(v1, v1);
+    float d20 = dot(v2, v0);
+    float d21 = dot(v2, v1);
+    float denom = d00 * d11 - d01 *d01;
+
+    delete v0; delete v1; delete v2;
+    
+    float alpha = (d11 * d20 - d01 * d21) / denom;
+    float beta = (d00 * d21 - d01 * d20) / denom;
+    float gamma = 1.0 - alpha - beta;
+
+    Vector* na_contrib = mult(na, alpha);
+    Vector* nb_contrib = mult(nb, beta);
+    Vector* nc_contrib = mult(nc, gamma);
+
+    Vector* na_plus_nb = add(na_contrib, nb_contrib);
+    Vector* norm = add(na_plus_nb, nc_contrib);
+
+    delete na_contrib; delete nb_contrib; delete nc_contrib;
+    delete na_plus_nb;
+
+    norm->normalize();
+
+    return norm;
 
 }
