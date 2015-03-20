@@ -108,13 +108,15 @@ Sphere::Sphere(Point* c, float r, World* w, Matrix* t, Material* m)
  * and (c = sphere's center) and (r = sphere's radius). 
  * This function returns -1.0 if there is no intersection. */
 float Sphere::intersect(Ray* r, Point** i_obj) {
-    Ray* rt = new Ray(mLeftP(t_inverse, r->p0), mLeftV(t_inverse, r->dir));
-    rt->t_min = r->t_min;
-    rt->t_max = r->t_max;
+    Point rt_p0 = mLeftP(t_inverse, r->p0);
+    Vector rt_dir = mLeftV(t_inverse, r->dir);
+    Ray rt = Ray(&rt_p0, &rt_dir);
+    rt.t_min = r->t_min;
+    rt.t_max = r->t_max;
 
-    float d_d = dot(rt->dir, rt->dir);
-    Vector* e_minus_c = newVector(center, rt->p0);
-    float d_ec = dot(rt->dir, e_minus_c);
+    float d_d = dot(rt.dir, rt.dir);
+    Vector* e_minus_c = newVector(center, rt.p0);
+    float d_ec = dot(rt.dir, e_minus_c);
     float ec_ec = dot(e_minus_c, e_minus_c);
 
     delete e_minus_c;
@@ -128,9 +130,8 @@ float Sphere::intersect(Ray* r, Point** i_obj) {
     float t0 = (-d_ec + sqrt(discriminant)) / d_d;
     float t1 = (-d_ec - sqrt(discriminant)) / d_d;
 
-    *i_obj = rt->findPoint(fmin(t0, t1));
+    *i_obj = rt.findPoint(fmin(t0, t1));
     
-    delete rt->p0; delete rt->dir;
     return fmin(t0,t1);
     
 }
@@ -162,24 +163,26 @@ Triangle::Triangle(Point* p0, Point* p1, Point* p2,
 }
 
 float Triangle::intersect(Ray* r, Point** i_obj) {
-    Ray* rt = new Ray(mLeftP(t_inverse, r->p0), mLeftV(t_inverse, r->dir));
-    rt->t_min = r->t_min;
-    rt->t_max = r->t_max;
+    Point rt_p0 = mLeftP(t_inverse, r->p0);
+    Vector rt_dir = mLeftV(t_inverse, r->dir);
+    Ray rt = Ray(&rt_p0, &rt_dir);
+    rt.t_min = r->t_min;
+    rt.t_max = r->t_max;
 
     Vector* a_min_b = newVector(pb, pa);
     Vector* a_min_c = newVector(pc, pa);
 
     float a = a_min_b->x; float b = a_min_b->y; float c = a_min_b->z;
     float d = a_min_c->x; float e = a_min_c->y; float f = a_min_c->z;
-    float g = (rt->dir)->x; float h = (rt->dir)->y; float i = (rt->dir)->z;
-    float j = pa->x - (rt->p0)->x;
-    float k = pa->y - (rt->p0)->y;
-    float l = pa->z - (rt->p0)->z;
+    float g = (rt.dir)->x; float h = (rt.dir)->y; float i = (rt.dir)->z;
+    float j = pa->x - (rt.p0)->x;
+    float k = pa->y - (rt.p0)->y;
+    float l = pa->z - (rt.p0)->z;
     float M = a*(e*i - h*f) + b*(g*f - d*i) + c*(d*h - e*g);
     delete a_min_b; delete a_min_c;
 
     float t = -(f*(a*k - j*b) + e*(j*c - a*l) + d*(b*l - k*c)) / M;
-    if (t < rt->t_min || t > rt->t_max) return -1.0;
+    if (t < rt.t_min || t > rt.t_max) return -1.0;
 
     float gamma = (i*(a*k - j*b) + h*(j*c - a*l) + g*(b*l - k*c)) / M;
     if (gamma < 0 || gamma > 1) return -1.0;
@@ -187,7 +190,7 @@ float Triangle::intersect(Ray* r, Point** i_obj) {
     float beta = (j*(e*i - h*f) + k*(g*f - d*i) + l*(d*h - e*g)) / M;
     if (beta < 0 || beta > 1 - gamma) return -1.0;
 
-    *i_obj = rt->findPoint(t);
+    *i_obj = rt.findPoint(t);
 
     return t;   
 }

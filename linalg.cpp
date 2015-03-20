@@ -332,17 +332,17 @@ void Matrix::setMatrix(float nmat[4][4]){
 	}
 }
 
-Vector* mLeftV(Matrix* m, Vector* v){
+Vector mLeftV(Matrix* m, Vector* v){
 	float s1 = m->getVal(1, 1) * v->x + m->getVal(1,2)*v->y
             + m->getVal(1,3)*v->z;
 	float s2 = m->getVal(2, 1) * v->x + m->getVal(2,2)*v->y
             + m->getVal(2,3)*v->z;
 	float s3 = m->getVal(3, 1) * v->x + m->getVal(3,2)*v->y
             + m->getVal(3,3)*v->z;
-	return new Vector(s1, s2, s3);
+	return Vector(s1, s2, s3);
 }
 
-Point* mLeftP(Matrix* m, Point* v){
+Point mLeftP(Matrix* m, Point* v){
 	float s1 = m->getVal(1, 1) * v->x + m->getVal(1,2)*v->y + m->getVal(1,3)*v->z + m->getVal(1,4);
 	float s2 = m->getVal(2, 1) * v->x + m->getVal(2,2)*v->y + m->getVal(2,3)*v->z + m->getVal(2,4);
 	float s3 = m->getVal(3, 1) * v->x + m->getVal(3,2)*v->y + m->getVal(3,3)*v->z + m->getVal(3,4);
@@ -352,7 +352,7 @@ Point* mLeftP(Matrix* m, Point* v){
             s2 = s2 * normalize;
             s3 = s3 * normalize;
         }
-	return new Point(s1, s2, s3);
+	return Point(s1, s2, s3);
 }
 
 //REALLY REALLY NEEDS TESTING

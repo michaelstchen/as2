@@ -107,6 +107,7 @@ Color* Scene::traceRay(Ray* e, int d) {
         if ( currT >= e->t_min && currT <= e->t_max && ( t<0 || currT<t ) ) {
             t = currT;
             s = (*shape_it);
+            if (i_obj != NULL) delete i_obj;
             i_obj = i_obj_t;
         } else {
             if (i_obj_t != NULL) delete i_obj_t;
@@ -115,27 +116,26 @@ Color* Scene::traceRay(Ray* e, int d) {
 
     if (i_obj != NULL) {
         Vector* n_obj = s->getNormal(i_obj);
-        Vector* n_world = mLeftV(s->normT, n_obj);
+        Vector n_world = mLeftV(s->normT, n_obj);
         delete n_obj;
 
-        Point* i_world = mLeftP(s->transform, i_obj);
+        Point i_world = mLeftP(s->transform, i_obj);
 
-        n_world->normalize(); (e->dir)->normalize();
+        n_world.normalize(); (e->dir)->normalize();
 
-        Color* brdf = s->calcBRDF(e->dir, n_world, i_world);
+        Color* brdf = s->calcBRDF(e->dir, &n_world, &i_world);
         c->add(brdf);
         delete brdf;
 
-        Vector* temp = mult(n_world, 2.0 * dot(e->dir, n_world));
+        Vector* temp = mult(&n_world, 2.0 * dot(e->dir, &n_world));
         Vector* r = sub(e->dir, temp);
         delete temp;
 
-        ReflectRay* rray = new ReflectRay(i_world, r);
-        Color* rcolor = traceRay(rray, --d);
+        ReflectRay rray = ReflectRay(&i_world, r);
+        Color* rcolor = traceRay(&rray, --d);
         rcolor->mult(s->material->kr);
         c->add(rcolor);
 
-        delete n_world; delete i_world;
         delete r; delete rcolor;
 
     }
@@ -150,9 +150,9 @@ void Scene::render() {
         for (int i = 0; i < view->getWidth(); i++) {
             Point* pixelLoc = view->getPixelPos(i, j);
             Vector* eye_dir = newVector(camera, pixelLoc);
-            EyeRay* e = new EyeRay(camera, eye_dir);
+            EyeRay e = EyeRay(camera, eye_dir);
 
-            view->setPixelColor(i, j, traceRay(e, depth));
+            view->setPixelColor(i, j, traceRay(&e, depth));
 
             delete pixelLoc; delete eye_dir;
         }
