@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-013.txt
+
+Run Time: <5sec
+
+Features: Rendered obj with interpolated normals. Compare lighting with image-014 (in both images the triangles have the same material properties, shape/positions, and the same directional lights incident upon their surfaces). Normals at vertices are pointing outwards, that's why it is dark at the corners and lighter more inside.

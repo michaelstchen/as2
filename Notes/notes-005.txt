@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-005.txt
+
+Run Time: <5sec
+
+Features: Sphere translations - all spheres are centered at (0,0,0) in their respective object coordinates and have been translated to their world coordinates. Also demonstrates sphere reflections.

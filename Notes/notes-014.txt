@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-014.txt
+
+Run Time: <5sec
+
+Features: Rendered triangle (constant face normal). Compare lighting with image-013 (in both images the triangles have the same material properties, shape/positions, and the same directional lights incident upon their surfaces). The lighting is the same everywhere on the surface because the light is directional and pointed into the plane of the image, the normal is constant for the whole face, and there are no specular reflections.

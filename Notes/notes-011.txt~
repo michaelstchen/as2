@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-011.txt
+
+Run Time: ~10sec
+
+Features: Polygon translation, rotation (non-axis aligned), reflection, shadow.

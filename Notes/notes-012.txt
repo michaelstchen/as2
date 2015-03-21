@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-012.txt
+
+Run Time: ~40min
+
+Features: A rendering of an obj file with close to 3500 traingles. Shadows. The obj file was taken from http://inst.eecs.berkeley.edu/~cs184/fa09/resources.php

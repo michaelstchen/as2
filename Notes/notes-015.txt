@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-015.txt
+
+Run Time: <5sec
+
+Features: rendered with a point light with a linear falloff. compare with image_017 (no falloff) and image_016 (quadratic falloff)

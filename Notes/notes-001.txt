@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-001.txt
+
+Run Time: <5sec
+
+Features: Phong Shading (multiple colors, lights)

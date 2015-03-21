@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-007.txt
+
+Run Time: <5sec
+
+Features: Sphere rotations - this image is the same as image-005 except that all the spheres have also been rotated 45 degrees clockwise (the z-axis serves as the rotation axis).
