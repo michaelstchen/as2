@@ -62,8 +62,8 @@ Color* Shape::calcBRDF(Vector* v, Vector* n, Point* p) {
 
         if ((**it).isPointLight()) {
             float distance = dist((**it).pos, p);
-            diff->mult(1.0 / pow(distance, (**it).falloff));
-            spec->mult(1.0 / pow(distance, (**it).falloff));
+            diff->mult(1.0f / fmax(1.0f, pow(distance, (**it).falloff)));
+            spec->mult(1.0f / fmax(1.0f, pow(distance, (**it).falloff)));
         }
 
         c->add(diff); c->add(spec);
