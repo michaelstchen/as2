@@ -1,5 +1,0 @@
-Command: make && ./main Inputs/input-009.txt
-
-Run Time: <5sec
-
-Features: Triangle scales - the triangle on the right is the untransformed version. The triangle on the left has been translated, rotated, scaled, and rotated back.

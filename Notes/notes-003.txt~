@@ -1,5 +1,0 @@
-Command: make && ./main Inputs/input-003.txt
-
-Run Time: <5sec
-
-Features: sphere shadow from point light.

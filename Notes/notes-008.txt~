@@ -1,5 +1,0 @@
-Command: make && ./main Inputs/input-008.txt
-
-Run Time: <5sec
-
-Features: Triangle translation - the triangle on the right in untransformed while the triangle on the left is the same exact triangle but translated to the left.

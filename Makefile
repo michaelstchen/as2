@@ -18,7 +18,7 @@ main: clean main.cpp
 	$(CC) $(CFLAGS) -o main main.cpp $(FILES) $(PNGFLAGS)
 
 clean: 
-	$(RM) *.o main *~ output.png test Inputs/*~
+	$(RM) *.o main *~ output.png test Inputs/*~ Notes/*~
 
 check: all libgtest.a
 	$(CC) $(CFLAGS) -isystem ${GTEST_DIR}/include -pthread test.cpp $(FILES) libgtest.a -o test

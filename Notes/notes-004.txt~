@@ -1,5 +1,0 @@
-Command: make && ./main Inputs/input-004.txt
-
-Run Time: <5sec
-
-Features: sphere shadows and reflections on plane of two triangles. multiple lights creates overlapping shadows.

@@ -1,5 +1,0 @@
-Command: make && ./main Inputs/input-006.txt
-
-Run Time: <5sec
-
-Features: Sphere scaling - the center sphere is untransformed while the left and right spheres have been translated and scaled in the y and x axes respectively.
