@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++11
+CFLAGS = -std=c++11 -g
 
 #Flags for libPNG
 PNGFLAGS = -lm -lpng
@@ -18,7 +18,7 @@ main: clean main.cpp
 	$(CC) $(CFLAGS) -o main main.cpp $(FILES) $(PNGFLAGS)
 
 clean: 
-	$(RM) *.o main *~ output.png test
+	$(RM) *.o main *~ output.png test Inputs/*~
 
 check: all libgtest.a
 	$(CC) $(CFLAGS) -isystem ${GTEST_DIR}/include -pthread test.cpp $(FILES) libgtest.a -o test

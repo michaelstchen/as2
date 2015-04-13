@@ -1,6 +1,7 @@
 #include <vector>
 #include <stdio.h>
 #include "raytracer.h"
+#include "geomobj.h"
 
 /* World class implemetations */
 void World::addLight(Light* l) {
@@ -35,30 +36,12 @@ vector<Shape*>::iterator World::shapeIterEnd() {
     return shapes.end();
 }
 
-void World::clearMem() {
-    vector<Light*>::iterator light_it = lightIter();
-    for (light_it; light_it != lightIterEnd(); ++light_it) {
-        delete (**light_it).pos;
-        delete (**light_it).dir;
-        delete (**light_it).color;
-        delete *light_it;
-    }
-
-    vector<Shape*>::iterator shape_it = shapeIter();
-    for (shape_it; shape_it != shapeIterEnd(); ++shape_it) {
-        delete (**shape_it).transform; delete (**shape_it).normT;
-        delete ((**shape_it).material)->ka; delete ((**shape_it).material)->kd; delete ((**shape_it).material)->ks; delete ((**shape_it).material)->kr;
-        delete *shape_it;
-    }
-    
-}
-
 
 /* ImgPlane class implementations */
 ImgPlane::ImgPlane(Point* LL, Point* LR, Point* UL, Point* UR, int w, int h) {
     ll = LL; lr = LR; ul = UL; ur = UR;
     height = h; width = w;
-    pixels.resize(height*width, new Color(0.0, 0.0, 0.0));
+    pixels.resize(height*width, NULL);
 }
 
 int ImgPlane::getHeight() {
@@ -85,6 +68,7 @@ Point* ImgPlane::getPixelPos(int i, int j) {
 
     Point* uLeft = mult(left, 1.0 - u);
     Point* uRight = mult(right, u);
+    delete left; delete right;
     Point* ret = add(uLeft, uRight);
     delete uLeft; delete uRight;
     
@@ -92,19 +76,11 @@ Point* ImgPlane::getPixelPos(int i, int j) {
 }
 
 void ImgPlane::setPixelColor(int i, int j, Color* c) {
-    pixels[i + j*width] = c;
+    pixels[i + j*width]=c;
 }
 
 Color* ImgPlane::getPixelColor(int i, int j) {
     return pixels[i + j*width];
-}
-
-void ImgPlane::clearMem() {
-    delete ll; delete lr; delete ul; delete ur;
-    vector<Color*>::iterator it = pixels.begin();
-    for (it; it != pixels.end(); ++it) {
-        delete *it;
-    }
 }
 
 
@@ -115,9 +91,13 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
     camera = c;
 }
 
-Color* Scene::traceEye(EyeRay* e) {
+Color* Scene::traceRay(Ray* e, int depth) {
+    Color* c = new Color(0,0,0);
+    Shape* s;
     float t = -1.0;
-    Shape* s; Color* ret;
+
+    if (depth <= 0) return c;
+
     vector<Shape*>::iterator shape_it = world->shapeIter();
     for (shape_it; shape_it != world->shapeIterEnd(); ++shape_it) {
         float currT = (**shape_it).intersect(e);
@@ -128,14 +108,28 @@ Color* Scene::traceEye(EyeRay* e) {
     }
     
     Point* inter = e->findPoint(t);
+
     if (inter != NULL) {
-        ret = s->calcBRDF(e, inter);
-    } else {
-        ret = new Color(0.0, 0.0, 0.0);
+        Color* brdf = s->calcBRDF(e, inter);
+        c->add(brdf);
+        delete brdf;
+
+        Vector* n = s->getNormal(inter);
+        n->normalize(); (e->dir)->normalize();
+        Vector* r_temp = mult(n, 2.0 * dot(e->dir, n));
+        Vector* r = sub(e->dir, r_temp);
+        delete r_temp;
+
+        ReflectRay* rray = new ReflectRay(inter, r);
+        Color* refl = traceRay(rray, --depth);
+        refl->mult(s->material->kr);
+        c->add(refl);
+        delete n; delete r; delete refl;
+
     }
 
     delete inter;
-    return ret;
+    return c;
     
 }
 
@@ -145,16 +139,10 @@ void Scene::render() {
             Point* pixelLoc = view->getPixelPos(i, j);
             Vector* eye_dir = newVector(camera, pixelLoc);
             EyeRay* e = new EyeRay(camera, eye_dir);
-            Color* pixelColor = traceEye(e);
 
-            delete pixelLoc; delete eye_dir; delete e;
-            view->setPixelColor(i, j, pixelColor);
+            view->setPixelColor(i, j, traceRay(e, 1));
+
+            delete pixelLoc; delete eye_dir;
         }
     }
-}
-
-void Scene::clearMem() {
-    delete world;
-    delete view;
-    delete camera;
 }
