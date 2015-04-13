@@ -1,20 +1,6 @@
 #ifndef PROPERTY_H
 #define PROPERTY_H
 
-//*************************************************
-// Contains classes that store color data.
-//
-// The Classes:
-//
-//     --Color: stores color data in floating point
-//              RGB values.
-//     --Material: stores a shape's material lighting
-//                 and reflectivity properties as
-//                 Color values.
-//
-//************************************************
-
-
 class Color {
  public:
     Color() {};

@@ -1,6 +1,5 @@
 #include "light.h"
 #include <cstddef>
-#include <cmath>
 
 Point_Light::Point_Light(Color* c, Point* p, int f) {
     color = c;
