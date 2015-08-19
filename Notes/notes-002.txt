@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-002.txt
+
+Run Time: <5sec
+
+Features: Sphere shadow from directional light

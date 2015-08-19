@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-010.txt
+
+Run Time: <5sec
+
+Features: Triangle Rotation - the triangled on the right is the untransformed version. The triangle has been rotatated 180 degrees about the z-axis.

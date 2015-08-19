@@ -1,0 +1,5 @@
+Command: make && ./main Inputs/input-011.txt
+
+Run Time: ~10sec
+
+Features: Polygon translation, rotation (non-axis aligned), reflection, shadow. The obj file for the dodecahedron was taken from http://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
