@@ -14,3 +14,5 @@ image-013.obj was taken from: http://inst.eecs.berkeley.edu/~cs184/fa09/resource
 image-012.obj was taken from: http://people.sc.fsu.edu/~jburkardt/data/obj/obj.html
 
 All required features are implemented. No optional features have been implemented.
+
+NOTE: Please see the Outputs/ folder to see examples of what our raytracer can do. The outputs can be regereated with the corresponding with the corresponding file in the Inputs/ folder.
