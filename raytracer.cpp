@@ -1,3 +1,19 @@
+//***************************************************
+// 
+// Author: Michael Stephen Chen
+//
+// Description:
+//    Does most of the heavy lifting and computations for
+//    our raytracer.
+//
+// NOTE:
+//    THE WORLD AND SCENE CLASSES PROBABLY SHOULD HAVE BEEN
+//    JUST ONE CLASS SINCE THE TWO TERMS HAVE VERY SIMILAR MEANINGS
+//    WHEN IT COMES TO COMPUTER GRAPHICS.
+//
+//***************************************************
+
+
 #include <vector>
 #include <stdio.h>
 #include "raytracer.h"
@@ -37,7 +53,7 @@ vector<Shape*>::iterator World::shapeIterEnd() {
 }
 
 
-/* ImgPlane class implementations */
+/* ImgPlane (or our window) class implementations */
 ImgPlane::ImgPlane(Point* LL, Point* LR, Point* UL, Point* UR, int w, int h) {
     ll = LL; lr = LR; ul = UL; ur = UR;
     height = h; width = w;
@@ -92,6 +108,10 @@ Scene::Scene(World* w, ImgPlane* v, Point* c) {
     depth = 3;
 }
 
+/* Look of intersections of our rays with an object. If intersect,
+ * trace ReflectRays and ShadowRays to determine reflection and
+ * shadows.
+ */
 Color* Scene::traceRay(Ray* e, int d) {
     Color* c = new Color(0,0,0);
     Shape* s = NULL;
@@ -149,6 +169,8 @@ Color* Scene::traceRay(Ray* e, int d) {
     
 }
 
+
+/* Trace eyerays and store returned color */
 void Scene::render() {
     for (int j = 0; j < view->getHeight(); j++) {
         for (int i = 0; i < view->getWidth(); i++) {

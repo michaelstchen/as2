@@ -1,3 +1,12 @@
+//***************************************************
+// 
+// Author: Michael Stephen Chen
+//
+// Description:
+//    Definitions for the basic shape primitives to be rendered
+// 
+//***************************************************
+
 #include "geomobj.h"
 #include "ray.h"
 #include "linalg.h"

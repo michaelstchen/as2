@@ -1,3 +1,13 @@
+//***************************************************
+// 
+// Author: Michael Stephen Chen
+//
+// Description:
+//    Definitions for the different types of lights available
+//    for use in our scene.
+// 
+//***************************************************
+
 #include "light.h"
 #include <cstddef>
 #include <cmath>

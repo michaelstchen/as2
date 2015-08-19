@@ -1,3 +1,14 @@
+//***************************************************
+// 
+// Author: Michael Stephen Chen
+//
+// Description:
+//    Assignment 2 for CS184, Spring 2015. A simple raytracer
+//    taking .obj or .txt (see examples for syntax) files
+//    as inputs and writes out scene as a .png
+// 
+//***************************************************
+
 #include <cstdlib>
 #include <stdio.h>
 #include <math.h>

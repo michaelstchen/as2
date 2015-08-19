@@ -1,3 +1,14 @@
+//***************************************************
+// 
+// Author: Michael Stephen Chen
+//
+// Description:
+//    Definitions for an object's surface properties
+//    (i.e. color, specular highlight, etc.).
+// 
+//***************************************************
+
+
 #include "property.h"
 #include <cmath>
 

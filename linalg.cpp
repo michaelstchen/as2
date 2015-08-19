@@ -1,3 +1,13 @@
+//***************************************************
+// 
+// Author: Michael Stephen Chen and Christopher Chen
+//
+// Description:
+//    Definitions for basic math primitives (Point, Vector)
+//    and utility functions for vector math and linear algebra.
+// 
+//***************************************************
+
 #include "linalg.h"
 #include <cmath>
 #include <cstddef>
@@ -96,9 +106,6 @@ Vector* newVector(Point* p1, Point* p2) {
     ret->z = p2->z - p1->z;
     return ret;
 }
-
-//-------------------------------------------------------------------------------------------------
-//NEEDS TESTING FOR ALL CODE UNDER HERE vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 float Matrix::getVal(int i, int j){
 	return mat[i - 1][j - 1];
